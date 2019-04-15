@@ -20,22 +20,31 @@ public class GenerateScriptInstallationNodeService implements
 
 	@Override
 	public String getTitle(Locale locale) {
-		// TODO Auto-generated method stub
-		return null;
+		return "Generate Script";
 	}
 
 	@Override
 	public GenerateScriptInstallationNodeView createView(ViewAPIProvider apiProvider) {
-		// TODO Auto-generated method stub
-		return null;
+		//SystemAPI systemAPI = apiProvider.getSystemAPI();
+		//Style style = systemAPI.getSoftwareVersion().getMajorVersion() >= 5 ? new V5Style() : new V3Style();
+		//return new GenerateScriptInstallationNodeView(style);
+		return new GenerateScriptInstallationNodeView();
 	}
+	
+	
+	
+	
 
 	@Override
 	public GenerateScriptInstallationNodeContribution createInstallationNode(InstallationAPIProvider apiProvider,
 			GenerateScriptInstallationNodeView view, DataModel model, CreationContext context) {
-		// TODO Auto-generated method stub
-		return null;
+		return new GenerateScriptInstallationNodeContribution(apiProvider, view, model);
 	}
 
+
+	
+	
 	
 }
+
+

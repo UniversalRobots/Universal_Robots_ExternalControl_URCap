@@ -3,6 +3,7 @@ package com.fzi.generateScript.impl;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import com.ur.urcap.api.contribution.installation.swing.SwingInstallationNodeService;
 import com.ur.urcap.api.contribution.program.swing.SwingProgramNodeService;
 
 
@@ -10,8 +11,9 @@ public class Activator implements BundleActivator {
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		System.out.println("Generate Script registering!");
-		
+		bundleContext.registerService(SwingInstallationNodeService.class, new GenerateScriptInstallationNodeService(), null);
 		bundleContext.registerService(SwingProgramNodeService.class, new GenerateScriptProgramNodeService(), null);
+		
 	}
 
 	@Override
