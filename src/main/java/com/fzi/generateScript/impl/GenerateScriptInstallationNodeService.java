@@ -25,9 +25,6 @@ public class GenerateScriptInstallationNodeService implements
 
 	@Override
 	public GenerateScriptInstallationNodeView createView(ViewAPIProvider apiProvider) {
-		//SystemAPI systemAPI = apiProvider.getSystemAPI();
-		//Style style = systemAPI.getSoftwareVersion().getMajorVersion() >= 5 ? new V5Style() : new V3Style();
-		//return new GenerateScriptInstallationNodeView(style);
 		return new GenerateScriptInstallationNodeView();
 	}
 	
