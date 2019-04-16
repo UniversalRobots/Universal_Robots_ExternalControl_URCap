@@ -16,7 +16,7 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 public class GenerateScriptInstallationNodeContribution implements InstallationNodeContribution {
 
 	private static final String HOST_IP= "ip";
-	private static final String DEFAULT_VALUE= "default";
+	private static final String DEFAULT_VALUE= "192.168.1.254";
 	private DataModel model;
 	private final GenerateScriptInstallationNodeView view;
 	private final InstallationAPI installationAPI;
