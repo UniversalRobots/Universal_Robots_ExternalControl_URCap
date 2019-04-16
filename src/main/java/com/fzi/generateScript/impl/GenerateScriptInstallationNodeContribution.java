@@ -5,8 +5,6 @@ import com.ur.urcap.api.contribution.installation.InstallationAPIProvider;
 import com.ur.urcap.api.domain.InstallationAPI;
 import com.ur.urcap.api.domain.data.DataModel;
 import com.ur.urcap.api.domain.script.ScriptWriter;
-import com.ur.urcap.api.domain.undoredo.UndoRedoManager;
-import com.ur.urcap.api.domain.undoredo.UndoableChanges;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputCallback;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputFactory;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
@@ -36,16 +34,12 @@ public class GenerateScriptInstallationNodeContribution implements InstallationN
 
 	@Override
 	public void openView() {
-		// TODO Auto-generated method stub
-		
 	}
 
 
 
 	@Override
-	public void closeView() {
-		// TODO Auto-generated method stub
-		
+	public void closeView() {	
 	}
 
 	public boolean isDefined() {
@@ -72,7 +66,6 @@ public class GenerateScriptInstallationNodeContribution implements InstallationN
 	}
 	
 	private void resetToDefaultValue() {
-		//view.setHostIP(DEFAULT_VALUE);
 		model.set(HOST_IP, DEFAULT_VALUE);
 	}
 	
