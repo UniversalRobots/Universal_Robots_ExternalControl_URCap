@@ -3,74 +3,27 @@ package com.fzi.generateScript.impl;
 
 import com.ur.urcap.api.contribution.ProgramNodeContribution;
 import com.ur.urcap.api.contribution.program.ProgramAPIProvider;
+import com.ur.urcap.api.domain.ProgramAPI;
 import com.ur.urcap.api.domain.data.DataModel;
 import com.ur.urcap.api.domain.script.ScriptWriter;
-import com.ur.urcap.api.domain.undoredo.UndoRedoManager;
-import com.ur.urcap.api.domain.undoredo.UndoableChanges;
 
 public class GenerateScriptProgramNodeContribution implements ProgramNodeContribution{
-
-	private final ProgramAPIProvider apiProvider;
-	private final GenerateScriptProgramNodeView view;
+	private static final String HOST_IP = "ip";
+	private static final String DEFAULT_VALUE= "default";
+	private final ProgramAPI programAPI;
 	private final DataModel model;
-	private final UndoRedoManager undoRedoManager;
-	
-	private static final String OUTPUT_KEY = "output";
-	private static final String DURATION_KEY = "duration";
-	
-	private static final Integer DEFAULT_OUTPUT = 0;
-	private static final int DEFAULT_DURATION = 1;
+
 	
 	public GenerateScriptProgramNodeContribution(ProgramAPIProvider apiProvider, GenerateScriptProgramNodeView view,
 			DataModel model) {
-		this.apiProvider = apiProvider;
-		this.view = view;
+		this.programAPI = apiProvider.getProgramAPI();
 		this.model = model;
-		this.undoRedoManager = this.apiProvider.getProgramAPI().getUndoRedoManager();
 	}
 	
-	public void onOutputSelection(final Integer output) {
-		undoRedoManager.recordChanges(new UndoableChanges() {
-			
-			@Override
-			public void executeChanges() {
-				model.set(OUTPUT_KEY, output);
-			}
-		});
-	}
 	
-	public void onDurationSelection(final int duration) {
-		undoRedoManager.recordChanges(new UndoableChanges() {
-			
-			@Override
-			public void executeChanges() {
-				model.set(DURATION_KEY, duration);
-			}
-		});
-	}
-	
-	private Integer getOutput() {
-		return model.get(OUTPUT_KEY, DEFAULT_OUTPUT);
-	}
-	
-	private int getDuration() {
-		return model.get(DURATION_KEY, DEFAULT_DURATION);
-	}
-	
-	private Integer[] getOutputItems() {
-		Integer[] items = new Integer[8];
-		for(int i = 0; i<8; i++) {
-			items[i] = i;
-		}
-		return items;
-	}
-	
+
 	@Override
 	public void openView() {
-		view.setIOComboBoxItems(getOutputItems());
-		
-		view.setIOComboBoxSelection(getOutput());
-		view.setDurationSlider(getDuration());
 	}
 
 	@Override
@@ -79,7 +32,7 @@ public class GenerateScriptProgramNodeContribution implements ProgramNodeContrib
 
 	@Override
 	public String getTitle() {
-		return "GenerateScript: DO"+getOutput()+" t="+getDuration();
+		return "GenerateScript";
 	}
 
 	@Override
@@ -87,12 +40,80 @@ public class GenerateScriptProgramNodeContribution implements ProgramNodeContrib
 		return true;
 	}
 	
+	public String getHostIP() {
+		return model.get(HOST_IP, DEFAULT_VALUE);
+	}
+	
 	@Override
 	public void generateScript(ScriptWriter writer) {
-		writer.appendRaw("popup(\"TEST123\")");
+		writer.appendRaw("popup(\"" + getInstallation().getHostIP() + "\" )");
 	}
 
+	
+	private GenerateScriptInstallationNodeContribution getInstallation() {
+		return programAPI.getInstallationNode(GenerateScriptInstallationNodeContribution.class);
+	}
+	
 	/*
+	 * private String generateIPInfo() {
+		//model.set(IP, "setted_before");
+		//System.out.println(model.get(IP, ""));
+		return model.get(IP, "");
+		//return model.isSet(IP) ? "The host IP is: " + getHostIP() + "." : "No IP set";
+	}
+	public KeyboardTextInput getKeyboardForTextField() {
+		KeyboardTextInput keyboardInput = keyboardFactory.createStringKeyboardInput();
+		keyboardInput.setInitialValue(getHostIP());
+		return keyboardInput;
+	}
+
+	public KeyboardInputCallback<String> getCallbackForTextField() {
+		return new KeyboardInputCallback<String>() {
+			@Override
+			public void onOk(String value) {
+				setHostIP(value);
+				//view.setPopupText(value);
+			}
+		};
+	}
+	
+	public void setHostIP(final String value) {
+		undoRedoManager.recordChanges(new UndoableChanges() {
+			@Override
+			public void executeChanges() {
+				if ("".equals(value)) {
+					model.remove(IP);
+				} else {
+					model.set(IP, value);
+				}
+			}
+		});
+
+	}
+	
+	private String getHostIP() {
+		return model.get(IP, "");
+	}
+	
+	private String generateIPInfo() {
+		//return "method testing";
+		return model.isSet(IP) ? "The host IP is: " + getHostIP() + "." : "No IP set";
+	}
+
+	
+	
+	 * writer.appendLine("popup(\"" + generatePopupMessage() + "\", hello_world_swing_popup_title, False, False, blocking=True)");
+	 * 
+	 * 
+	 * writer.appendRaw(
+				"a = \"Im testing\" \n" + 
+				"popup(a)"	);
+	}
+	 * 
+	 * 
+	 * writer.appendRaw("popup(\"TEST123\")");
+	 * 
+	 * 
 	@Override
 	public void generateScript(ScriptWriter writer) {
 		writer.appendRaw( "	textmsg(\"value=\",3)(\n" + 

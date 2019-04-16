@@ -5,6 +5,11 @@ import com.ur.urcap.api.contribution.installation.InstallationAPIProvider;
 import com.ur.urcap.api.domain.InstallationAPI;
 import com.ur.urcap.api.domain.data.DataModel;
 import com.ur.urcap.api.domain.script.ScriptWriter;
+import com.ur.urcap.api.domain.undoredo.UndoRedoManager;
+import com.ur.urcap.api.domain.undoredo.UndoableChanges;
+import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputCallback;
+import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputFactory;
+import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 
 
 
@@ -12,16 +17,17 @@ import com.ur.urcap.api.domain.script.ScriptWriter;
 
 public class GenerateScriptInstallationNodeContribution implements InstallationNodeContribution {
 
-	private static final String HOST_IP = "";
-	private static final String DEFAULT_VALUE = "000.000.000.000";
-	
+	private static final String HOST_IP= "ip";
+	private static final String DEFAULT_VALUE= "default";
 	private DataModel model;
 	private final GenerateScriptInstallationNodeView view;
 	private final InstallationAPI installationAPI;
+	private final KeyboardInputFactory keyboardFactory;
 	
 
 	public GenerateScriptInstallationNodeContribution(InstallationAPIProvider apiProvider, GenerateScriptInstallationNodeView view, DataModel model) {
 		this.installationAPI = apiProvider.getInstallationAPI();
+		this.keyboardFactory = apiProvider.getUserInterfaceAPI().getUserInteraction().getKeyboardInputFactory();
 		this.model = model;
 		this.view = view;
 	}
@@ -42,6 +48,9 @@ public class GenerateScriptInstallationNodeContribution implements InstallationN
 		
 	}
 
+	public boolean isDefined() {
+		return !getHostIP().isEmpty();
+	}
 
 
 	@Override
@@ -67,4 +76,21 @@ public class GenerateScriptInstallationNodeContribution implements InstallationN
 		model.set(HOST_IP, DEFAULT_VALUE);
 	}
 	
+	public KeyboardTextInput getInputForTextField() {
+		KeyboardTextInput keyboInput = keyboardFactory.createStringKeyboardInput();
+		keyboInput.setInitialValue(getHostIP());
+		return keyboInput;
+	}
+	
+	public KeyboardInputCallback<String> getCallbackForTextField() {
+		return new KeyboardInputCallback<String>() {
+			@Override
+			public void onOk(String value) {
+				System.out.println("Om pressed: " + value );
+				setHostIP(value);
+				System.out.println("getHostIP: " + getHostIP());
+			}
+		};
+	}
+
 }
