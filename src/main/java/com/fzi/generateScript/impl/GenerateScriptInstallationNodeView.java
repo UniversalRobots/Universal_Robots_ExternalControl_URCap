@@ -23,6 +23,7 @@ public class GenerateScriptInstallationNodeView implements SwingInstallationNode
 		JLabel label = new JLabel("Please setup the remote host's IP: ");
 		panel.add(label);
 		textField = new JTextField(15);
+		textField.setText(contribution.getHostIP());
 		textField.setFocusable(false);
 		textField.addMouseListener(new MouseAdapter() {
 			@Override
@@ -31,16 +32,16 @@ public class GenerateScriptInstallationNodeView implements SwingInstallationNode
 				keyboardInput.show(textField, contribution.getCallbackForTextField());
 			}
 		});
-		
 		panel.add(textField);
-	
 	}
 
 	
 	
 	
 	
-	
+	public void UpdateIPTextField(String value) {
+		textField.setText(value);
+	}
 	
 	
 	

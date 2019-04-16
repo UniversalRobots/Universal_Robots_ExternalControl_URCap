@@ -79,9 +79,8 @@ public class GenerateScriptInstallationNodeContribution implements InstallationN
 		return new KeyboardInputCallback<String>() {
 			@Override
 			public void onOk(String value) {
-				System.out.println("Om pressed: " + value );
 				setHostIP(value);
-				System.out.println("getHostIP: " + getHostIP());
+				view.UpdateIPTextField(value);
 			}
 		};
 	}
