@@ -1,13 +1,11 @@
 package com.fzi.generateScript.impl;
 
-
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-
 import com.ur.urcap.api.contribution.ProgramNodeContribution;
 import com.ur.urcap.api.contribution.program.ProgramAPIProvider;
 import com.ur.urcap.api.domain.ProgramAPI;
 import com.ur.urcap.api.domain.data.DataModel;
+import com.ur.urcap.api.domain.undoredo.UndoRedoManager;
+import com.ur.urcap.api.domain.undoredo.UndoableChanges;
 import com.ur.urcap.api.domain.script.ScriptWriter;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputCallback;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputFactory;
@@ -18,22 +16,23 @@ public class GenerateScriptProgramNodeContribution implements ProgramNodeContrib
 	private static final boolean ADVANCED_PARAM_DEFAULT = false;
 	private static final String MAX_LOST_PACKAGES= "maxlostpackages";
 	private static final String MAX_LOST_PACKAGES_DEFAULT_VALUE= "1000";
-	private static final String GAIN_SERVO_J= "";
+	private static final String GAIN_SERVO_J= "gain_servo_j";
 	private static final String GAIN_SERVO_J_DEFAULT_VALUE= "0";
 	private final ProgramAPI programAPI;
 	private final DataModel model;
 	private final GenerateScriptProgramNodeView view;
 	private final KeyboardInputFactory keyboardFactory;
+	private final UndoRedoManager undoRedoManager;
 	
 
 	
 	public GenerateScriptProgramNodeContribution(ProgramAPIProvider apiProvider, GenerateScriptProgramNodeView view,
 			DataModel model) {
 		this.programAPI = apiProvider.getProgramAPI();
+		this.undoRedoManager = apiProvider.getProgramAPI().getUndoRedoManager();
+		this.keyboardFactory = apiProvider.getUserInterfaceAPI().getUserInteraction().getKeyboardInputFactory();
 		this.model = model;
 		this.view = view;
-		this.keyboardFactory = apiProvider.getUserInterfaceAPI().getUserInteraction().getKeyboardInputFactory();
-		updateAdvancedParam(getAdvancedParam());
 	}
 	
 
@@ -61,11 +60,17 @@ public class GenerateScriptProgramNodeContribution implements ProgramNodeContrib
 		writer.appendRaw("popup(\"" + getInstallation().getHostIP() + "\" )");
 	}*/
 	
+	@Override
+	public void generateScript(ScriptWriter writer) {
+		//writer.appendRaw("popup(\"" + getParam(MAX_LOST_PACKAGES, MAX_LOST_PACKAGES_DEFAULT_VALUE) + "\" )");
+		writer.appendRaw("popup(\"" + getParam(GAIN_SERVO_J, GAIN_SERVO_J_DEFAULT_VALUE) + "\" )");
+	}
 	
+	/*
 	@Override
 	public void generateScript(ScriptWriter writer) {
 		writer.appendRaw("popup(\"IP: \"  \"" + getInstallation().getHostIP() + "\"   \"      MLP:  \"  \"" + getInstallation().getHostIP() + "\"  )");
-	}
+	}*/
 	
 	
 	private GenerateScriptInstallationNodeContribution getInstallation() {
@@ -73,34 +78,27 @@ public class GenerateScriptProgramNodeContribution implements ProgramNodeContrib
 	}
 	
 	
-	public ItemListener getListenerForAdvancedParam() {
-		return new ItemListener() {	
+	public void setParam(final String key, final String value , final String default_val) {
+		undoRedoManager.recordChanges(new UndoableChanges() {
 			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					setAdvancedParam(true);
+			public void executeChanges() {
+				if ("".equals(value)) {
+					resetToDefaultValue(key, default_val);
 				} else {
-					setAdvancedParam(false);
+					model.set(key, value);  
 				}
 			}
-		}; 
+		});	
 	}
 	
+
 	
-	public void setParam(String key, String value) {
-		if ("".equals(value)) {
-			resetToDefaultValue();
-		} else {
-			model.set(MAX_LOST_PACKAGES, value);  // TODO enum or so for key????
-		}
+	public String getParam(String key, String default_val) {
+		return model.get(key, default_val);
 	}
 	
-	public String getParam() {
-		return model.get(MAX_LOST_PACKAGES, MAX_LOST_PACKAGES_DEFAULT_VALUE);
-	}
-	
-	private void resetToDefaultValue() {
-		model.set(MAX_LOST_PACKAGES, MAX_LOST_PACKAGES_DEFAULT_VALUE);
+	private void resetToDefaultValue(String key, String default_val) {
+		model.set(key, default_val);
 	}
 	
 	
@@ -109,34 +107,61 @@ public class GenerateScriptProgramNodeContribution implements ProgramNodeContrib
 		return model.get(ADVANCED_PARAM_KEY, ADVANCED_PARAM_DEFAULT);
 	}
 	
-	public void setAdvancedParam(boolean show) {
-		updateAdvancedParam(show);
-		model.set(ADVANCED_PARAM_KEY, show);
+	
+	public void setAdvancedParam(final boolean show) {
+		updateAdvancedParam(show);	
+		undoRedoManager.recordChanges(new UndoableChanges() {
+			@Override
+			public void executeChanges() {
+				model.set(ADVANCED_PARAM_KEY, show);
+			}
+		});
+		
 	}
+	
+	
 	
 	
 	private void updateAdvancedParam(boolean enable) {
-		System.out.println("Advnced Param is set to: " + enable);
 		if(enable) {
-			//TODO show advanced param
+			view.showAdvancedParameters(true);
 		} else {
-			//TODO hide advanced param
+			view.showAdvancedParameters(false);
 		}
 	}
 	
-	public KeyboardTextInput getInputForTextField() {
+	
+	
+	
+	public KeyboardTextInput getInputForMaxLostPackages() {
 		KeyboardTextInput keyboardInput = keyboardFactory.createStringKeyboardInput();
-		keyboardInput.setInitialValue(getParam());
+		keyboardInput.setInitialValue(getParam(MAX_LOST_PACKAGES, MAX_LOST_PACKAGES_DEFAULT_VALUE));
 		return keyboardInput;
 	}
 	
-	public KeyboardInputCallback<String> getCallbackForTextField() {
+	public KeyboardInputCallback<String> getCallbackForMaxLostPackages() {
 		return new KeyboardInputCallback<String>() {
 			@Override
 			public void onOk(String value) {
-				System.out.println("VALUE: " + value);
-				setParam(MAX_LOST_PACKAGES, value);
-				view.UpdateMaxLostPackages_TF(value);;
+				setParam(MAX_LOST_PACKAGES, value, MAX_LOST_PACKAGES_DEFAULT_VALUE);
+				view.updateMaxLostPackages_TF(value);
+			}
+		};
+	}
+	
+	
+	public KeyboardTextInput getInputForGainServoj() {
+		KeyboardTextInput keyboardInput = keyboardFactory.createStringKeyboardInput();
+		keyboardInput.setInitialValue(getParam(GAIN_SERVO_J, GAIN_SERVO_J_DEFAULT_VALUE));
+		return keyboardInput;
+	}
+	
+	public KeyboardInputCallback<String> getCallbackForGainServoj() {
+		return new KeyboardInputCallback<String>() {
+			@Override
+			public void onOk(String value) {
+				setParam(GAIN_SERVO_J, value, GAIN_SERVO_J_DEFAULT_VALUE);
+				view.updateGainServoj_TF(value);
 			}
 		};
 	}
