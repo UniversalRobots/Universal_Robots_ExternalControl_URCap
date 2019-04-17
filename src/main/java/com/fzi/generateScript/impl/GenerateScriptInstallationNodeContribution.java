@@ -2,7 +2,7 @@ package com.fzi.generateScript.impl;
 
 import com.ur.urcap.api.contribution.InstallationNodeContribution;
 import com.ur.urcap.api.contribution.installation.InstallationAPIProvider;
-import com.ur.urcap.api.domain.InstallationAPI;
+//import com.ur.urcap.api.domain.InstallationAPI;
 import com.ur.urcap.api.domain.data.DataModel;
 import com.ur.urcap.api.domain.script.ScriptWriter;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputCallback;
@@ -19,23 +19,21 @@ public class GenerateScriptInstallationNodeContribution implements InstallationN
 	private static final String DEFAULT_VALUE= "192.168.1.254";
 	private DataModel model;
 	private final GenerateScriptInstallationNodeView view;
-	private final InstallationAPI installationAPI;
+	//private final InstallationAPI installationAPI;
 	private final KeyboardInputFactory keyboardFactory;
 	
 
 	public GenerateScriptInstallationNodeContribution(InstallationAPIProvider apiProvider, GenerateScriptInstallationNodeView view, DataModel model) {
-		this.installationAPI = apiProvider.getInstallationAPI();
+		//this.installationAPI = apiProvider.getInstallationAPI();
 		this.keyboardFactory = apiProvider.getUserInterfaceAPI().getUserInteraction().getKeyboardInputFactory();
 		this.model = model;
 		this.view = view;
 	}
 
 
-
 	@Override
 	public void openView() {
 	}
-
 
 
 	@Override

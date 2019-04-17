@@ -35,17 +35,7 @@ public class GenerateScriptInstallationNodeView implements SwingInstallationNode
 		panel.add(textField);
 	}
 
-	
-	
-	
-	
 	public void UpdateIPTextField(String value) {
 		textField.setText(value);
 	}
-	
-	
-	
-	
-	
-	
 }
