@@ -40,10 +40,10 @@ public class GenerateScriptProgramNodeView implements SwingProgramNodeView<Gener
 	public void buildUI(JPanel panel, ContributionProvider<GenerateScriptProgramNodeContribution> provider) {
 		
 		createParam(panel, provider, maxLostPackages_TF,"Max Nr. of lost pkg: ", "1000");
-		panel.add(createAdvancedParamBox(provider));
+		//panel.add(createAdvancedParamBox(provider));
 		//panel.add(createHorizontalSpacing(10));
 		//panel.add(createVerticalSpacing(10));
-		createParam(panel, provider, gainServoj_TF, "Gain servoj: ", "0");	
+		//createParam(panel, provider, gainServoj_TF, "Gain servoj: ", "0");	
 	}
 	
 
@@ -68,7 +68,7 @@ public class GenerateScriptProgramNodeView implements SwingProgramNodeView<Gener
 		});
 		panel.add(textField);
 	}
-	
+	/*
 	private Box createAdvancedParamBox(ContributionProvider<GenerateScriptProgramNodeContribution> provider) {
 		Box advancedParamBox = Box.createHorizontalBox();
 		advancedParam_CB = new JCheckBox("Show advanced parameters");
@@ -80,7 +80,7 @@ public class GenerateScriptProgramNodeView implements SwingProgramNodeView<Gener
 		advancedParamBox.add(Box.createHorizontalGlue());
 		return advancedParamBox;
 	}
-
+*/
 	
 
 	private Component createVerticalSpacing(int height) {
@@ -94,8 +94,8 @@ public class GenerateScriptProgramNodeView implements SwingProgramNodeView<Gener
 	public void UpdateMaxLostPackages_TF(String value) {
 		maxLostPackages_TF.setText(value);
 	}
-	
+	/*
 	public void UpdateGainServoj_TF(String value) {
 		gainServoj_TF.setText(value);
-	}
+	}*/
 }

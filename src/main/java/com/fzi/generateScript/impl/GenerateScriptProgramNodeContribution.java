@@ -16,7 +16,7 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 public class GenerateScriptProgramNodeContribution implements ProgramNodeContribution{
 	private static final String ADVANCED_PARAM_KEY = "showadvancedparam";
 	private static final boolean ADVANCED_PARAM_DEFAULT = false;
-	private static final String MAX_LOST_PACKAGES= "";
+	private static final String MAX_LOST_PACKAGES= "maxlostpackages";
 	private static final String MAX_LOST_PACKAGES_DEFAULT_VALUE= "1000";
 	private static final String GAIN_SERVO_J= "";
 	private static final String GAIN_SERVO_J_DEFAULT_VALUE= "0";
@@ -55,10 +55,18 @@ public class GenerateScriptProgramNodeContribution implements ProgramNodeContrib
 		return true;
 	}
 	
+	/*
 	@Override
 	public void generateScript(ScriptWriter writer) {
 		writer.appendRaw("popup(\"" + getInstallation().getHostIP() + "\" )");
+	}*/
+	
+	
+	@Override
+	public void generateScript(ScriptWriter writer) {
+		writer.appendRaw("popup(\"IP: \"  \"" + getInstallation().getHostIP() + "\"   \"      MLP:  \"  \"" + getInstallation().getHostIP() + "\"  )");
 	}
+	
 	
 	private GenerateScriptInstallationNodeContribution getInstallation() {
 		return programAPI.getInstallationNode(GenerateScriptInstallationNodeContribution.class);
@@ -81,17 +89,17 @@ public class GenerateScriptProgramNodeContribution implements ProgramNodeContrib
 	
 	public void setParam(String key, String value) {
 		if ("".equals(value)) {
-			resetToDefaultValue(key);
+			resetToDefaultValue();
 		} else {
-			model.set(key, value);  // TODO enum or so for key????
+			model.set(MAX_LOST_PACKAGES, value);  // TODO enum or so for key????
 		}
 	}
 	
-	public String getParam(String key) {
+	public String getParam() {
 		return model.get(MAX_LOST_PACKAGES, MAX_LOST_PACKAGES_DEFAULT_VALUE);
 	}
 	
-	private void resetToDefaultValue(String key) {
+	private void resetToDefaultValue() {
 		model.set(MAX_LOST_PACKAGES, MAX_LOST_PACKAGES_DEFAULT_VALUE);
 	}
 	
@@ -118,7 +126,7 @@ public class GenerateScriptProgramNodeContribution implements ProgramNodeContrib
 	
 	public KeyboardTextInput getInputForTextField() {
 		KeyboardTextInput keyboardInput = keyboardFactory.createStringKeyboardInput();
-		keyboardInput.setInitialValue(getParam(MAX_LOST_PACKAGES));
+		keyboardInput.setInitialValue(getParam());
 		return keyboardInput;
 	}
 	
