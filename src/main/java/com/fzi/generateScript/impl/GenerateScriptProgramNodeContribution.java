@@ -110,6 +110,8 @@ public class GenerateScriptProgramNodeContribution implements ProgramNodeContrib
 	
 	public void setAdvancedParam(final boolean show) {
 		updateAdvancedParam(show);	
+		// UndoRedoManager is necessary in program node but not in installation node 
+		// (see here: https://plus.universal-robots.com/apidoc/40237/com/ur/urcap/api/domain/undoredo/undoredomanager.html)
 		undoRedoManager.recordChanges(new UndoableChanges() {
 			@Override
 			public void executeChanges() {
