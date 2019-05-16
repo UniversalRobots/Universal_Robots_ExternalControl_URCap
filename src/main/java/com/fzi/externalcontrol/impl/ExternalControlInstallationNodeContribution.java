@@ -23,7 +23,8 @@
  */
 //----------------------------------------------------------------------
 
-package com.fzi.generateScript.impl;
+package com.fzi.externalcontrol.impl;
+
 
 import com.ur.urcap.api.contribution.InstallationNodeContribution;
 import com.ur.urcap.api.contribution.installation.InstallationAPIProvider;
@@ -34,15 +35,15 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputCallback;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputFactory;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 
-public class GenerateScriptInstallationNodeContribution implements InstallationNodeContribution {
+public class ExternalControlInstallationNodeContribution implements InstallationNodeContribution {
   private static final String HOST_IP = "ip";
   private static final String DEFAULT_VALUE = "192.168.1.254";
   private DataModel model;
-  private final GenerateScriptInstallationNodeView view;
+  private final ExternalControlInstallationNodeView view;
   private final KeyboardInputFactory keyboardFactory;
 
-  public GenerateScriptInstallationNodeContribution(InstallationAPIProvider apiProvider,
-      GenerateScriptInstallationNodeView view, DataModel model) {
+  public ExternalControlInstallationNodeContribution(InstallationAPIProvider apiProvider,
+      ExternalControlInstallationNodeView view, DataModel model) {
     this.keyboardFactory =
         apiProvider.getUserInterfaceAPI().getUserInteraction().getKeyboardInputFactory();
     this.model = model;

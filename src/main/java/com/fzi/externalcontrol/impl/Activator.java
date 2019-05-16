@@ -23,7 +23,7 @@
  */
 //----------------------------------------------------------------------
 
-package com.fzi.generateScript.impl;
+package com.fzi.externalcontrol.impl;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -34,11 +34,11 @@ import com.ur.urcap.api.contribution.program.swing.SwingProgramNodeService;
 public class Activator implements BundleActivator {
   @Override
   public void start(BundleContext bundleContext) throws Exception {
-    System.out.println("Generate Script registering!");
+    System.out.println("URcap enabling external control registering!");
     bundleContext.registerService(
-        SwingInstallationNodeService.class, new GenerateScriptInstallationNodeService(), null);
+        SwingInstallationNodeService.class, new ExternalControlInstallationNodeService(), null);
     bundleContext.registerService(
-        SwingProgramNodeService.class, new GenerateScriptProgramNodeService(), null);
+        SwingProgramNodeService.class, new ExternalControlProgramNodeService(), null);
   }
 
   @Override
