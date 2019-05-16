@@ -12,23 +12,23 @@
 	<packaging>bundle</packaging>
 
 	<properties>
-
+	
 		<!--********************************************************************-->
 		<!--   Note: Update this section with relevant meta data                -->
 		<!--         that comes along with your URCap                           -->
 		<!--********************************************************************-->
 		<!--******************* BEGINNING OF URCAP META DATA *******************-->
 		<urcap.symbolicname>com.fzi.generateScript</urcap.symbolicname>
-		<urcap.vendor>URCaps R us Inc.</urcap.vendor>
-		<urcap.contactAddress>123 URCap Street</urcap.contactAddress>
-		<urcap.copyright>Copyright notice (C)</urcap.copyright>
-		<urcap.description>This is a description of the URCap</urcap.description>
+		<urcap.vendor>FZI Research Center for Information Technology</urcap.vendor>
+		<urcap.contactAddress>Haid-und-Neu-Straße 10-14, 76131 Karlsruhe</urcap.contactAddress>
+		<urcap.copyright>Copyright (C) 2019-${copyright.year} FZI. All Rights Reserved</urcap.copyright>
+		<urcap.description>URcap to enable external control</urcap.description>
 		<urcap.licenseType>License type</urcap.licenseType>
 		<!--********************** END OF URCAP META DATA **********************-->
 		<!--********************************************************************-->
 
 		<!-- Host, username and password of the robot to be used when running "mvn install -Premote" -->
-		<urcap.install.host>localhost</urcap.install.host>
+		<urcap.install.host></urcap.install.host>
 		<urcap.install.username>root</urcap.install.username>
 		<urcap.install.password>easybot</urcap.install.password>
 
@@ -39,6 +39,10 @@
 		<ursimvm.install.host></ursimvm.install.host>
 		<ursimvm.install.username>ur</ursimvm.install.username>
 		<ursimvm.install.password>easybot</ursimvm.install.password>
+
+		<!--Current year for the copyright-->
+		<copyright.year>${maven.build.timestamp}</copyright.year>
+		<maven.build.timestamp.format>2019</maven.build.timestamp.format>
 	</properties>
 
 	<build>
