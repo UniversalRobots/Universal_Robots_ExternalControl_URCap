@@ -26,9 +26,17 @@
 package com.fzi.externalcontrol.impl;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import com.ur.urcap.api.contribution.InstallationNodeContribution;
 import com.ur.urcap.api.contribution.installation.InstallationAPIProvider;
-// import com.ur.urcap.api.domain.InstallationAPI;
 import com.ur.urcap.api.domain.data.DataModel;
 import com.ur.urcap.api.domain.script.ScriptWriter;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputCallback;
@@ -36,7 +44,15 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputFactory;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 
 public class ExternalControlInstallationNodeContribution implements InstallationNodeContribution {
-  private static final String HOST_IP = "ip";
+ 
+	//socket
+  private static String[] args = {"192.168.0.104", "3141"};
+  private static final String HOST_IP = args[0];
+  private static final int PORT_NR = Integer.parseInt(args[1]);
+  private Socket rosSocket = null;
+  private String urScriptProgram = null;
+  
+  //bare bone
   private static final String DEFAULT_VALUE = "192.168.1.254";
   private DataModel model;
   private final ExternalControlInstallationNodeView view;
@@ -96,4 +112,54 @@ public class ExternalControlInstallationNodeContribution implements Installation
       }
     };
   }
+  
+  
+  public void requestProgram() {
+	  //boolean socketOpen = false;
+	  
+	  for (int i = 0; i < 20; i++) {
+		  try {
+			rosSocket = new Socket(HOST_IP, PORT_NR);
+			//PrintWriter out = new PrintWriter(rosSocket.getOutputStream(),true);
+			//BufferedReader in = new BufferedReader(new InputStreamReader(rosSocket.getInputStream()));
+			//BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+			
+			OutputStream out = rosSocket.getOutputStream();
+			PrintStream ps = new PrintStream(out, true);
+			ps.println("Request");
+			
+			InputStream in = rosSocket.getInputStream();
+			System.out.println("Received bytes" + in.available());
+			BufferedReader buff = new BufferedReader(new InputStreamReader(in));
+			
+			while (buff.ready()) {
+				System.out.println(buff.readLine());
+				urScriptProgram = buff.readLine();
+			}
+			
+			
+		} catch (UnknownHostException e) {
+			System.err.println("Socket can not be opened due to Unkown host");	
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("Socket can not be opened due to IO issues");	
+			e.printStackTrace();
+		} finally {
+			if (rosSocket != null)
+				try {
+					rosSocket.close();
+					System.out.println("Socket is closed.");
+				} catch (IOException e) {
+					System.err.println("Closing socket was not possible.");
+					e.printStackTrace();
+				}
+		}
+		  
+	  }
+	  }
+
+  public String getUrScriptProgram() {
+	  return urScriptProgram;
+  }
+  
 }

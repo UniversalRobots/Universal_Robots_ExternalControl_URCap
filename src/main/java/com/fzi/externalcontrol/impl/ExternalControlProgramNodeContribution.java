@@ -77,8 +77,15 @@ public boolean isDefined() {
 
 @Override
 public void generateScript(ScriptWriter writer) {
- writer.appendRaw("popup(\"" + getInstallation().getHostIP() + "\" )");
- // writer.appendRaw("popup(\"" + getParam(GAIN_SERVO_J, GAIN_SERVO_J_DEFAULT_VALUE) + "\" )");
+	// for testing if IP is set correct in installation
+	writer.appendRaw("popup(\"" + getInstallation().getHostIP() + "\" )");
+	// writer.appendRaw("popup(\"" + getParam(GAIN_SERVO_J, GAIN_SERVO_J_DEFAULT_VALUE) + "\" )");
+ 
+	String urScriptProgram = getInstallation().getUrScriptProgram();
+	System.out.println(urScriptProgram);
+	writer.appendRaw("popup(\"" + urScriptProgram + "\" )");
+
+
 }
 
 private ExternalControlInstallationNodeContribution getInstallation() {
@@ -162,4 +169,8 @@ public KeyboardInputCallback<String> getCallbackForGainServoj() {
    }
  };
 }
+
+
+
+
 }
