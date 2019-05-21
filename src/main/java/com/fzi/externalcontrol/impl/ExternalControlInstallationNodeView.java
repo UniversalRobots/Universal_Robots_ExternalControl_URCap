@@ -28,37 +28,112 @@ package com.fzi.externalcontrol.impl;
 import com.ur.urcap.api.contribution.installation.swing.SwingInstallationNodeView;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class ExternalControlInstallationNodeView
     implements SwingInstallationNodeView<ExternalControlInstallationNodeContribution> {
-  private JTextField textField;
+  private JTextField textFieldIP;
+  private JTextField textFieldPort;
 
   public ExternalControlInstallationNodeView() {}
 
   @Override
   public void buildUI(
       JPanel panel, final ExternalControlInstallationNodeContribution contribution) {
-    JLabel label = new JLabel("Please setup the remote host's IP: ");
-    panel.add(label);
-    textField = new JTextField(15);
-    textField.setText(contribution.getHostIP());
-    textField.setFocusable(false);
-    textField.addMouseListener(new MouseAdapter() {
-      @Override
-      public void mousePressed(MouseEvent e) {
-        KeyboardTextInput keyboardInput = contribution.getInputForTextField();
-        keyboardInput.show(textField, contribution.getCallbackForTextField());
-      }
-    });
-    panel.add(textField);
+    panel.add(createIPBox(contribution));
+    panel.add(createSpacer(60));
+    panel.add(createPortBox(contribution));
+    panel.add(createSpacer(60));
+    panel.add(createRequestProgramBox(contribution));
+    
+    // "Please setup the remote host's IP: "
+    // "Please setup the custom port: "
   }
 
   public void UpdateIPTextField(String value) {
-    textField.setText(value);
+    textFieldIP.setText(value);
+  }
+  
+  public void UpdatePortTextField(String value) {
+	    textFieldPort.setText(value);
+	  }
+
+  
+  private Box createIPBox(final ExternalControlInstallationNodeContribution contribution) {
+	    Box box = Box.createVerticalBox();
+	    // create IP Label
+	    JLabel label = new JLabel("Please setup the remote host's IP: ");
+	    box.add(label);
+	    // create IP Textfield
+	    textFieldIP = new JTextField(15);
+	    textFieldIP.setText(contribution.getHostIP());
+	    textFieldIP.setFocusable(false);
+	    textFieldIP.addMouseListener(new MouseAdapter() {
+	      @Override
+	      public void mousePressed(MouseEvent e) {
+	        KeyboardTextInput keyboardInput = contribution.getInputForIPTextField();
+	        keyboardInput.show(textFieldIP, contribution.getCallbackForIPTextField());
+	      }
+	    });
+	    box.add(textFieldIP);
+	    return box;
+	  }
+	  
+	  
+	  
+	  private Box createPortBox(final ExternalControlInstallationNodeContribution contribution) {
+		    Box box = Box.createVerticalBox();
+		    // create port Label
+		    JLabel label = new JLabel("Please setup the custom port: ");
+		    box.add(label);
+		    // create port Textfield
+		    textFieldPort = new JTextField(15);
+		    textFieldPort.setText(contribution.getHostPort());
+		    textFieldPort.setFocusable(false);
+		    textFieldPort.addMouseListener(new MouseAdapter() {
+		      @Override
+		      public void mousePressed(MouseEvent e) {
+		        KeyboardTextInput keyboardInput = contribution.getInputForPortTextField();
+		        keyboardInput.show(textFieldPort, contribution.getCallbackForPortTextField());
+		      }
+		    });
+		    box.add(textFieldPort);
+		    return box;
+		  }
+  
+ 
+
+  private Box createRequestProgramBox(
+      final ExternalControlInstallationNodeContribution contribution) {
+    Box box = Box.createVerticalBox();
+    JButton button = new JButton("request program");
+    button.addActionListener(new ActionListener() {
+
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("Request program button pushed");
+        //contribution.makePopupTest();
+        contribution.requestProgram();
+      }
+    });
+    box.add(button);
+    return box;
+  }
+  
+  
+  private Component createSpacer(int height) {
+	  return Box.createRigidArea(new Dimension(0, height));
   }
 }
