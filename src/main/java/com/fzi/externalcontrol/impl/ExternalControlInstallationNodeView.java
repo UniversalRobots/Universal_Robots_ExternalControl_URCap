@@ -30,7 +30,6 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;

@@ -25,17 +25,8 @@
 
 package com.fzi.externalcontrol.impl;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.net.Socket;
-import java.net.UnknownHostException;
 
 import com.jbm.urcap.sample.scriptCommunicator.communicator.ScriptCommand;
-import com.jbm.urcap.sample.scriptCommunicator.communicator.ScriptSender;
 import com.ur.urcap.api.contribution.InstallationNodeContribution;
 import com.ur.urcap.api.contribution.installation.InstallationAPIProvider;
 import com.ur.urcap.api.domain.data.DataModel;
@@ -48,14 +39,13 @@ public class ExternalControlInstallationNodeContribution implements Installation
   // socket
   private static final String HOST_IP = "";
   private static final String PORT_NR = "";
-  private Socket rosSocket = null;
   private String urScriptProgram = null;
   
-  private final ScriptSender sender;
+  private final RequestProgram programRequest;
 
   // bare bone
-  private static final String DEFAULT_IP = "192.168.1.254";
-  private static final String DEFAULT_PORT = "30000";
+  private static final String DEFAULT_IP = "127.0.0.1";
+  private static final String DEFAULT_PORT = "30002";
   private DataModel model;
   private final ExternalControlInstallationNodeView view;
   private final KeyboardInputFactory keyboardFactory;
@@ -68,21 +58,20 @@ public class ExternalControlInstallationNodeContribution implements Installation
         apiProvider.getUserInterfaceAPI().getUserInteraction().getKeyboardInputFactory();
     this.model = model;
     this.view = view;
-    this.sender = new ScriptSender();
-    
+    this.programRequest= new RequestProgram(getHostIP(), getHostPort());
   }
 
-  
+  /*
   public void makePopupTest() {
 	  ScriptCommand sendtestCommand = new ScriptCommand("testSend");
 	  sendtestCommand.appendLine("popup(\"This is a popup\")");
 	  sender.sendScriptCommand(sendtestCommand);
-  }
+  }*/
   
   public void requestProgram() {
 	  ScriptCommand sendtestCommand = new ScriptCommand("requestProgram");
-	  //sendtestCommand.appendLine("popup(\"This is a popup\")");
-	  //sender.sendScriptCommand(sendtestCommand);
+	  sendtestCommand.appendLine("popup(\"This is a popup\")");
+	  programRequest.sendCommand(sendtestCommand);
   }
   
   @Override
