@@ -78,11 +78,11 @@ public class ExternalControlProgramNodeContribution implements ProgramNodeContri
   @Override
   public void generateScript(ScriptWriter writer) {
     // for testing if IP is set correct in installation
-    writer.appendRaw("popup(\"" + getInstallation().getHostIP() + "\" )");
+    //writer.appendRaw("popup(\"" + getInstallation().getHostIP() + "\" )");
     // writer.appendRaw("popup(\"" + getParam(GAIN_SERVO_J, GAIN_SERVO_J_DEFAULT_VALUE) + "\" )");
 
     String urScriptProgram = getInstallation().getUrScriptProgram();
-    System.out.println(urScriptProgram);
+    System.out.println("In program node " + urScriptProgram);
     writer.appendRaw("popup(\"" + urScriptProgram + "\" )");
   }
 

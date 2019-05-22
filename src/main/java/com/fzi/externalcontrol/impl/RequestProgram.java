@@ -25,53 +25,66 @@
 package com.fzi.externalcontrol.impl;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class RequestProgram {
-  private final String sendIp;
-  private final int sendPort;
-
-  private final String returnIp;
-  private final int returnPort;
+  // custom IP
+  private final String hostIp;
+  // custom port
+  private final int portNr;
 
   /*
    * Default constructor
    */
-  public RequestProgram(String sendIp, String sendPort) {
-    this.sendIp = sendIp;
-    this.sendPort = Integer.parseInt(sendPort);
-    this.returnIp = this.sendIp;
-    this.returnPort = 5500; // Integer.parseInt(returnPort);
+  public RequestProgram(String hostIp, String portNr) {
+    this.hostIp = hostIp;
+    this.portNr = Integer.parseInt(portNr);
   }
 
-  public String readValueFromRobot(BuildCommand command) {
-    String input = "";
+  public RequestProgram(String hostIp, int portNr) {
+    this.hostIp = hostIp;
+    this.portNr = portNr;
+  }
 
+  public String sendCommand(BuildCommand scriptCommand) {
+    String command = commandToString(scriptCommand);
+    String result = "";
     try {
       // socket creation
-      ServerSocket server = new ServerSocket(returnPort);
-      ScriptSender sender = new ScriptSender(sendIp, sendPort);
-      sender.sendCommand(command);
+      Socket socket = new Socket(hostIp, portNr);
+      if (socket.isConnected()) {
+        // output stream creation
+        DataOutputStream out= new DataOutputStream(socket.getOutputStream());
 
-      Socket returnSocket = server.accept();
-
-      BufferedReader readFromURScript =
-          new BufferedReader(new InputStreamReader(returnSocket.getInputStream()));
-      input = readFromURScript.readLine();
-
-      // cleaunp
-      readFromURScript.close();
-      returnSocket.close();
-      server.close();
-
+        // send command
+        out.write(command.getBytes("US-ASCII"));
+        
+        DataInputStream in = new DataInputStream(socket.getInputStream());
+        BufferedReader buff = new BufferedReader(new InputStreamReader(in));
+       
+        result+=buff.readLine();
+        
+        /*while (buff.ready()) {
+        	System.out.println("In while");
+        	System.out.println(buff.readLine());
+        	result+=buff.readLine();
+        }*/
+       
+        out.flush();
+        out.close();
+      }
+      socket.close();
     } catch (IOException e) {
       System.err.println(e);
     }
-    System.out.println("readValueFromRobot: " + input);
-    return input;
+    return result;
+  }
+
+  public String commandToString(BuildCommand scriptCommand) {
+    return scriptCommand.toString();
   }
 }
