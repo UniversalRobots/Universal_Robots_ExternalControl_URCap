@@ -116,6 +116,7 @@ public class ExternalControlInstallationNodeView
       public void actionPerformed(ActionEvent e) {
         System.out.println("Request program button pushed");
         contribution.requestProgram();
+        //contribution.makePopup();
       }
     });
     box.add(button);

@@ -33,18 +33,18 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputCallback;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputFactory;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 
-
 public class ExternalControlInstallationNodeContribution implements InstallationNodeContribution {
   // socket
   private static final String HOST_IP = "";
   private static final String PORT_NR = "";
-  private String urScriptProgram = null;
+  private String urScriptProgram = "";
 
-  private final RequestProgram programRequest;
+  private final ScriptSender sender;
+  private final RequestProgram requester;
 
   // bare bone
   private static final String DEFAULT_IP = "127.0.0.1";
-  private static final String DEFAULT_PORT = "30002";
+  private static final String DEFAULT_PORT = "4444";
   private DataModel model;
   private final ExternalControlInstallationNodeView view;
   private final KeyboardInputFactory keyboardFactory;
@@ -55,15 +55,23 @@ public class ExternalControlInstallationNodeContribution implements Installation
         apiProvider.getUserInterfaceAPI().getUserInteraction().getKeyboardInputFactory();
     this.model = model;
     this.view = view;
-    this.programRequest = new RequestProgram(getHostIP(), getHostPort());
+    this.sender = new ScriptSender(getHostIP(), getHostPort());
+    this.requester= new RequestProgram(getHostIP(), getHostPort());
+
+  }
+
+  // method just for testing
+  public void makePopup() {
+    BuildCommand sendtestCommand = new BuildCommand("makePopup");
+    sendtestCommand.appendLine("popup(\"This is a popup\")");
+    sender.sendCommand(sendtestCommand);
   }
 
   public void requestProgram() {
-    BuildCommand sendtestCommand = new BuildCommand("requestProgram");
-    sendtestCommand.appendLine("popup(\"This is a popup\")");
-    System.out.println("requestProgram: " + sendtestCommand);
-    System.out.println();
-    programRequest.sendCommand(sendtestCommand);
+    BuildCommand command = new BuildCommand("requestProgram");
+    command.appendLine("test_text");
+    urScriptProgram = sender.sendCommand(command);
+    System.out.println("urScriptProgram: " + urScriptProgram);
   }
 
   @Override
