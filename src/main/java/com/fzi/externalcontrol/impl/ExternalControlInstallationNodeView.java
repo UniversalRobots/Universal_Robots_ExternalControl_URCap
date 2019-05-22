@@ -56,9 +56,6 @@ public class ExternalControlInstallationNodeView
     panel.add(createPortBox(contribution));
     panel.add(createSpacer(60));
     panel.add(createRequestProgramBox(contribution));
-
-    // "Please setup the remote host's IP: "
-    // "Please setup the custom port: "
   }
 
   public void UpdateIPTextField(String value) {
@@ -118,7 +115,6 @@ public class ExternalControlInstallationNodeView
       @Override
       public void actionPerformed(ActionEvent e) {
         System.out.println("Request program button pushed");
-        //contribution.makePopupTest();
         contribution.requestProgram();
       }
     });

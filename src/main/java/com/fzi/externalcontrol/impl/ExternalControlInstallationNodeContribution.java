@@ -33,16 +33,12 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputCallback;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputFactory;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 
-import com.jbm.urcap.sample.scriptCommunicator.communicator.ScriptCommand;
-import com.jbm.urcap.sample.scriptCommunicator.communicator.ScriptSender;
-
 
 public class ExternalControlInstallationNodeContribution implements InstallationNodeContribution {
   // socket
   private static final String HOST_IP = "";
   private static final String PORT_NR = "";
   private String urScriptProgram = null;
-  private final ScriptSender sender;
 
   private final RequestProgram programRequest;
 
@@ -59,16 +55,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
         apiProvider.getUserInterfaceAPI().getUserInteraction().getKeyboardInputFactory();
     this.model = model;
     this.view = view;
-    this.sender = new ScriptSender();
     this.programRequest = new RequestProgram(getHostIP(), getHostPort());
-  }
-
-  public void makePopupTest() {
-    ScriptCommand sendtestCommand = new ScriptCommand("requestProgram");
-    sendtestCommand.appendLine("popup(\"This is a popup\")");
-    System.out.println("make popup: " + sendtestCommand);
-    System.out.println();
-    sender.sendScriptCommand(sendtestCommand);
   }
 
   public void requestProgram() {
