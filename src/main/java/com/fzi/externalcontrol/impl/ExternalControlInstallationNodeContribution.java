@@ -34,8 +34,8 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputFactory;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 
 public class ExternalControlInstallationNodeContribution implements InstallationNodeContribution {
-  private static final String HOST_IP = "";
-  private static final String PORT_NR = "";
+  private static final String HOST_IP = "127.0.0.1";
+  private static final String PORT_NR = "4444";
   private String urScriptProgram = "";
   private final RequestProgram sender;
   private static final String DEFAULT_IP = "127.0.0.1";
@@ -116,7 +116,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
   }
 
   // port helper functions
-  public void setHostport(String port) {
+  public void setHostPort(String port) {
     if ("".equals(port)) {
       resetToDefaultPort();
     } else {
@@ -142,7 +142,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
     return new KeyboardInputCallback<String>() {
       @Override
       public void onOk(String value) {
-        setHostIP(value);
+        setHostPort(value);
         view.UpdatePortTextField(value);
       }
     };
