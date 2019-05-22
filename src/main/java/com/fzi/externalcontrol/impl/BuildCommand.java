@@ -24,9 +24,9 @@
 //----------------------------------------------------------------------
 package com.fzi.externalcontrol.impl;
 
-public class ScriptCommand {
+public class BuildCommand {
   private final String programName;
-  private String commandContent;
+  private String commandContent = "";
   private final String prefix = "def ";
   private final String postfix = "end\n";
 
@@ -34,7 +34,7 @@ public class ScriptCommand {
    * Create new ScriptCommand with custom name
    * @param name is the custom name (must be alphanumeric and strat with a letter)
    */
-  public ScriptCommand(String name) {
+  public BuildCommand(String name) {
     this.programName = name + "():\n";
   }
 

@@ -25,8 +25,6 @@
 
 package com.fzi.externalcontrol.impl;
 
-
-import com.jbm.urcap.sample.scriptCommunicator.communicator.ScriptCommand;
 import com.ur.urcap.api.contribution.InstallationNodeContribution;
 import com.ur.urcap.api.contribution.installation.InstallationAPIProvider;
 import com.ur.urcap.api.domain.data.DataModel;
@@ -35,12 +33,17 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputCallback;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputFactory;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 
+import com.jbm.urcap.sample.scriptCommunicator.communicator.ScriptCommand;
+import com.jbm.urcap.sample.scriptCommunicator.communicator.ScriptSender;
+
+
 public class ExternalControlInstallationNodeContribution implements InstallationNodeContribution {
   // socket
   private static final String HOST_IP = "";
   private static final String PORT_NR = "";
   private String urScriptProgram = null;
-  
+  private final ScriptSender sender;
+
   private final RequestProgram programRequest;
 
   // bare bone
@@ -49,8 +52,6 @@ public class ExternalControlInstallationNodeContribution implements Installation
   private DataModel model;
   private final ExternalControlInstallationNodeView view;
   private final KeyboardInputFactory keyboardFactory;
-  
-  
 
   public ExternalControlInstallationNodeContribution(InstallationAPIProvider apiProvider,
       ExternalControlInstallationNodeView view, DataModel model) {
@@ -58,22 +59,26 @@ public class ExternalControlInstallationNodeContribution implements Installation
         apiProvider.getUserInterfaceAPI().getUserInteraction().getKeyboardInputFactory();
     this.model = model;
     this.view = view;
-    this.programRequest= new RequestProgram(getHostIP(), getHostPort());
+    this.sender = new ScriptSender();
+    this.programRequest = new RequestProgram(getHostIP(), getHostPort());
   }
 
-  /*
   public void makePopupTest() {
-	  ScriptCommand sendtestCommand = new ScriptCommand("testSend");
-	  sendtestCommand.appendLine("popup(\"This is a popup\")");
-	  sender.sendScriptCommand(sendtestCommand);
-  }*/
-  
-  public void requestProgram() {
-	  ScriptCommand sendtestCommand = new ScriptCommand("requestProgram");
-	  sendtestCommand.appendLine("popup(\"This is a popup\")");
-	  programRequest.sendCommand(sendtestCommand);
+    ScriptCommand sendtestCommand = new ScriptCommand("requestProgram");
+    sendtestCommand.appendLine("popup(\"This is a popup\")");
+    System.out.println("make popup: " + sendtestCommand);
+    System.out.println();
+    sender.sendScriptCommand(sendtestCommand);
   }
-  
+
+  public void requestProgram() {
+    BuildCommand sendtestCommand = new BuildCommand("requestProgram");
+    sendtestCommand.appendLine("popup(\"This is a popup\")");
+    System.out.println("requestProgram: " + sendtestCommand);
+    System.out.println();
+    programRequest.sendCommand(sendtestCommand);
+  }
+
   @Override
   public void openView() {}
 
@@ -89,8 +94,6 @@ public class ExternalControlInstallationNodeContribution implements Installation
     // TODO Auto-generated method stub
   }
 
-  
-  
   // IP helper functions
   public void setHostIP(String ip) {
     if ("".equals(ip)) {
@@ -99,34 +102,31 @@ public class ExternalControlInstallationNodeContribution implements Installation
       model.set(HOST_IP, ip);
     }
   }
-  
+
   public String getHostIP() {
     return model.get(HOST_IP, DEFAULT_IP);
   }
-  
+
   private void resetToDefaultIP() {
     model.set(HOST_IP, DEFAULT_IP);
   }
-  
-  public KeyboardTextInput getInputForIPTextField() {
-	    KeyboardTextInput keyboInput = keyboardFactory.createStringKeyboardInput();
-	    keyboInput.setInitialValue(getHostIP());
-	    return keyboInput;
-	  }
 
-	  public KeyboardInputCallback<String> getCallbackForIPTextField() {
-	    return new KeyboardInputCallback<String>() {
-	      @Override
-	      public void onOk(String value) {
-	        setHostIP(value);
-	        view.UpdateIPTextField(value);
-	      }
-	    };
-	  }
-  
-  
-	  
-	  
+  public KeyboardTextInput getInputForIPTextField() {
+    KeyboardTextInput keyboInput = keyboardFactory.createStringKeyboardInput();
+    keyboInput.setInitialValue(getHostIP());
+    return keyboInput;
+  }
+
+  public KeyboardInputCallback<String> getCallbackForIPTextField() {
+    return new KeyboardInputCallback<String>() {
+      @Override
+      public void onOk(String value) {
+        setHostIP(value);
+        view.UpdateIPTextField(value);
+      }
+    };
+  }
+
   // port helper functions
   public void setHostport(String port) {
     if ("".equals(port)) {
@@ -135,34 +135,30 @@ public class ExternalControlInstallationNodeContribution implements Installation
       model.set(PORT_NR, port);
     }
   }
-  
+
   public String getHostPort() {
     return model.get(PORT_NR, DEFAULT_PORT);
   }
-  
+
   private void resetToDefaultPort() {
     model.set(PORT_NR, DEFAULT_PORT);
   }
-  
-  
-  public KeyboardTextInput getInputForPortTextField() {
-	    KeyboardTextInput keyboInput = keyboardFactory.createStringKeyboardInput();
-	    keyboInput.setInitialValue(getHostPort());
-	    return keyboInput;
-	  }
-  
-  
-  
-  public KeyboardInputCallback<String> getCallbackForPortTextField() {
-	    return new KeyboardInputCallback<String>() {
-	      @Override
-	      public void onOk(String value) {
-	        setHostIP(value);
-	        view.UpdatePortTextField(value);
-	      }
-	    };
-	  }
 
+  public KeyboardTextInput getInputForPortTextField() {
+    KeyboardTextInput keyboInput = keyboardFactory.createStringKeyboardInput();
+    keyboInput.setInitialValue(getHostPort());
+    return keyboInput;
+  }
+
+  public KeyboardInputCallback<String> getCallbackForPortTextField() {
+    return new KeyboardInputCallback<String>() {
+      @Override
+      public void onOk(String value) {
+        setHostIP(value);
+        view.UpdatePortTextField(value);
+      }
+    };
+  }
 
   public String getUrScriptProgram() {
     return urScriptProgram;

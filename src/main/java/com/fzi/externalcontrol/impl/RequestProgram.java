@@ -42,7 +42,7 @@ public class RequestProgram {
     this.portNr = Integer.parseInt(portNr);
   }
 
-  public void sendCommand(ScriptCommand scriptCommand) {
+  public void sendCommand(BuildCommand scriptCommand) {
     String command = commandToString(scriptCommand);
 
     try {
@@ -64,7 +64,7 @@ public class RequestProgram {
     }
   }
 
-  public String commandToString(ScriptCommand scriptCommand) {
+  public String commandToString(BuildCommand scriptCommand) {
     return scriptCommand.toString();
   }
 }

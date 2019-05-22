@@ -56,7 +56,7 @@ public class ExternalControlInstallationNodeView
     panel.add(createPortBox(contribution));
     panel.add(createSpacer(60));
     panel.add(createRequestProgramBox(contribution));
-    
+
     // "Please setup the remote host's IP: "
     // "Please setup the custom port: "
   }
@@ -64,55 +64,50 @@ public class ExternalControlInstallationNodeView
   public void UpdateIPTextField(String value) {
     textFieldIP.setText(value);
   }
-  
-  public void UpdatePortTextField(String value) {
-	    textFieldPort.setText(value);
-	  }
 
-  
+  public void UpdatePortTextField(String value) {
+    textFieldPort.setText(value);
+  }
+
   private Box createIPBox(final ExternalControlInstallationNodeContribution contribution) {
-	    Box box = Box.createVerticalBox();
-	    // create IP Label
-	    JLabel label = new JLabel("Please setup the remote host's IP: ");
-	    box.add(label);
-	    // create IP Textfield
-	    textFieldIP = new JTextField(15);
-	    textFieldIP.setText(contribution.getHostIP());
-	    textFieldIP.setFocusable(false);
-	    textFieldIP.addMouseListener(new MouseAdapter() {
-	      @Override
-	      public void mousePressed(MouseEvent e) {
-	        KeyboardTextInput keyboardInput = contribution.getInputForIPTextField();
-	        keyboardInput.show(textFieldIP, contribution.getCallbackForIPTextField());
-	      }
-	    });
-	    box.add(textFieldIP);
-	    return box;
-	  }
-	  
-	  
-	  
-	  private Box createPortBox(final ExternalControlInstallationNodeContribution contribution) {
-		    Box box = Box.createVerticalBox();
-		    // create port Label
-		    JLabel label = new JLabel("Please setup the custom port: ");
-		    box.add(label);
-		    // create port Textfield
-		    textFieldPort = new JTextField(15);
-		    textFieldPort.setText(contribution.getHostPort());
-		    textFieldPort.setFocusable(false);
-		    textFieldPort.addMouseListener(new MouseAdapter() {
-		      @Override
-		      public void mousePressed(MouseEvent e) {
-		        KeyboardTextInput keyboardInput = contribution.getInputForPortTextField();
-		        keyboardInput.show(textFieldPort, contribution.getCallbackForPortTextField());
-		      }
-		    });
-		    box.add(textFieldPort);
-		    return box;
-		  }
-  
- 
+    Box box = Box.createVerticalBox();
+    // create IP Label
+    JLabel label = new JLabel("Please setup the remote host's IP: ");
+    box.add(label);
+    // create IP Textfield
+    textFieldIP = new JTextField(15);
+    textFieldIP.setText(contribution.getHostIP());
+    textFieldIP.setFocusable(false);
+    textFieldIP.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mousePressed(MouseEvent e) {
+        KeyboardTextInput keyboardInput = contribution.getInputForIPTextField();
+        keyboardInput.show(textFieldIP, contribution.getCallbackForIPTextField());
+      }
+    });
+    box.add(textFieldIP);
+    return box;
+  }
+
+  private Box createPortBox(final ExternalControlInstallationNodeContribution contribution) {
+    Box box = Box.createVerticalBox();
+    // create port Label
+    JLabel label = new JLabel("Please setup the custom port: ");
+    box.add(label);
+    // create port Textfield
+    textFieldPort = new JTextField(15);
+    textFieldPort.setText(contribution.getHostPort());
+    textFieldPort.setFocusable(false);
+    textFieldPort.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mousePressed(MouseEvent e) {
+        KeyboardTextInput keyboardInput = contribution.getInputForPortTextField();
+        keyboardInput.show(textFieldPort, contribution.getCallbackForPortTextField());
+      }
+    });
+    box.add(textFieldPort);
+    return box;
+  }
 
   private Box createRequestProgramBox(
       final ExternalControlInstallationNodeContribution contribution) {
@@ -130,9 +125,8 @@ public class ExternalControlInstallationNodeView
     box.add(button);
     return box;
   }
-  
-  
+
   private Component createSpacer(int height) {
-	  return Box.createRigidArea(new Dimension(0, height));
+    return Box.createRigidArea(new Dimension(0, height));
   }
 }
