@@ -24,47 +24,34 @@
 //----------------------------------------------------------------------
 package com.fzi.externalcontrol.impl;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.Socket;
+public class ScriptCommand {
+  private final String programName;
+  private String commandContent;
+  private final String prefix = "def ";
+  private final String postfix = "end\n";
 
-public class RequestProgram {
-  // custom IP
-  private final String hostIp;
-  // custom port
-  private final int portNr;
-
-  /*
-   * Default constructor
+  /**
+   * Create new ScriptCommand with custom name
+   * @param name is the custom name (must be alphanumeric and strat with a letter)
    */
-  public RequestProgram(String hostIp, String portNr) {
-    this.hostIp = hostIp;
-    this.portNr = Integer.parseInt(portNr);
+  public ScriptCommand(String name) {
+    this.programName = name + "():\n";
   }
 
-  public void sendCommand(ScriptCommand scriptCommand) {
-    String command = commandToString(scriptCommand);
-
-    try {
-      // socket creation
-      Socket socket = new Socket(hostIp, portNr);
-      if (socket.isConnected()) {
-        // output stream creation
-        DataOutputStream out;
-        out = new DataOutputStream(socket.getOutputStream());
-
-        // send command
-        out.write(command.getBytes("US-ASCII"));
-        out.flush();
-        out.close();
-      }
-      socket.close();
-    } catch (IOException e) {
-      System.err.println(e);
-    }
+  /**
+   * Append URScript line to the ScriptCommand
+   * @param command is the line to be appended
+   */
+  public void appendLine(String command) {
+    commandContent += " " + command + "\n";
   }
 
-  public String commandToString(ScriptCommand scriptCommand) {
-    return scriptCommand.toString();
+  @Override
+  public String toString() {
+    String command = prefix;
+    command += this.programName;
+    command += this.commandContent;
+    command += this.postfix;
+    return command;
   }
 }
