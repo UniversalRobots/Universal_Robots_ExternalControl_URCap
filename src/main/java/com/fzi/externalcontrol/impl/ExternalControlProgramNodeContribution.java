@@ -48,6 +48,7 @@ public class ExternalControlProgramNodeContribution implements ProgramNodeContri
   private final ExternalControlProgramNodeView view;
   private final KeyboardInputFactory keyboardFactory;
   private final UndoRedoManager undoRedoManager;
+  //private BuildCommand urScriptProgram;
 
   public ExternalControlProgramNodeContribution(
       ProgramAPIProvider apiProvider, ExternalControlProgramNodeView view, DataModel model) {
@@ -77,12 +78,15 @@ public class ExternalControlProgramNodeContribution implements ProgramNodeContri
 
   @Override
   public void generateScript(ScriptWriter writer) {
-    String urScriptProgram = getInstallation().getUrScriptProgram();
+    //  String urScriptProgram = getInstallation().getUrScriptProgram();
+    // writer.appendRaw(urScriptProgram);
+
     // for testing if IP is set correct in installation
     // writer.appendRaw("popup(\"" + getInstallation().getHostIP() + "\" )");
     // writer.appendRaw("popup(\"" + getParam(GAIN_SERVO_J, GAIN_SERVO_J_DEFAULT_VALUE) + "\" )");
-
-    writer.appendRaw(urScriptProgram);
+	  BuildCommand urScriptProgram = getInstallation().getUrScriptProgram();
+    System.out.println("Test urScriptProgram: " + urScriptProgram);
+    writer.appendRaw(urScriptProgram.toString());
   }
 
   private ExternalControlInstallationNodeContribution getInstallation() {
@@ -166,4 +170,14 @@ public class ExternalControlProgramNodeContribution implements ProgramNodeContri
       }
     };
   }
+
+  /*
+  public BuildCommand getUrScriptProgram() {
+    return urScriptProgram;
+  }
+
+  public void setUrScriptProgram(BuildCommand urScriptProgram) {
+            this.urScriptProgram = urScriptProgram;
+          }
+          */
 }

@@ -42,16 +42,17 @@ public class BuildCommand {
    * Append URScript line to the ScriptCommand
    * @param command is the line to be appended
    */
-  public void appendLine(String command) {
+  public void insertString(String command) {
     commandContent += " " + command + "\n";
   }
 
   @Override
   public String toString() {
-    //String command = prefix;
-    //command += this.programName;
-    String command = this.commandContent;
-    //command += this.postfix;
-    return "request_program\n";
+    String command = prefix;
+    command += this.programName;
+    command += this.commandContent;
+    command += this.postfix;
+    // return "request_program\n";
+    return command;
   }
 }

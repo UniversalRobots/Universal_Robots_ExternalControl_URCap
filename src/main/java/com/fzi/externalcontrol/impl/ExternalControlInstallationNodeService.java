@@ -30,6 +30,7 @@ import com.ur.urcap.api.contribution.installation.ContributionConfiguration;
 import com.ur.urcap.api.contribution.installation.CreationContext;
 import com.ur.urcap.api.contribution.installation.InstallationAPIProvider;
 import com.ur.urcap.api.contribution.installation.swing.SwingInstallationNodeService;
+import com.ur.urcap.api.contribution.program.ProgramAPIProvider;
 import com.ur.urcap.api.domain.data.DataModel;
 
 import java.util.Locale;
@@ -54,8 +55,8 @@ public class ExternalControlInstallationNodeService
 
   @Override
   public ExternalControlInstallationNodeContribution createInstallationNode(
-      InstallationAPIProvider apiProvider, ExternalControlInstallationNodeView view,
+      InstallationAPIProvider installationApiProvider, ExternalControlInstallationNodeView view,
       DataModel model, CreationContext context) {
-    return new ExternalControlInstallationNodeContribution(apiProvider, view, model);
+    return new ExternalControlInstallationNodeContribution(installationApiProvider, view, model);
   }
 }
