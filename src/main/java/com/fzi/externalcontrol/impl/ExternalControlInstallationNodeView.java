@@ -100,7 +100,6 @@ public class ExternalControlInstallationNodeView
     return box;
   }
 
-
   private Component createSpacer(int height) {
     return Box.createRigidArea(new Dimension(0, height));
   }

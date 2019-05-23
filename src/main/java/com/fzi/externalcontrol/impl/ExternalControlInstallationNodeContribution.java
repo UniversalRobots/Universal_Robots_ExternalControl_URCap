@@ -53,20 +53,6 @@ public class ExternalControlInstallationNodeContribution implements Installation
     this.sender = new RequestProgram(getHostIP(), getHostPort());
   }
 
-  // method just for testing
-  public void makePopup() {
-    BuildCommand sendtestCommand = new BuildCommand("makePopup");
-    sendtestCommand.appendLine("popup(\"This is a popup\")");
-    sender.sendCommand(sendtestCommand);
-  }
-
-  public void requestProgram() {
-    BuildCommand command = new BuildCommand("requestProgram");
-    command.appendLine("request_program");
-    urScriptProgram = sender.sendCommand(command);
-    System.out.println("urScriptProgram: " + urScriptProgram);
-  }
-
   @Override
   public void openView() {}
 
@@ -79,7 +65,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
 
   @Override
   public void generateScript(ScriptWriter writer) {
-	  requestProgram();
+    urScriptProgram = sender.sendCommand("request_program");
   }
 
   // IP helper functions
