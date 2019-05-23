@@ -30,13 +30,9 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
 import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -54,8 +50,6 @@ public class ExternalControlInstallationNodeView
     panel.add(createIPBox(contribution));
     panel.add(createSpacer(60));
     panel.add(createPortBox(contribution));
-    panel.add(createSpacer(60));
-    panel.add(createRequestProgramBox(contribution));
   }
 
   public void UpdateIPTextField(String value) {
@@ -106,22 +100,6 @@ public class ExternalControlInstallationNodeView
     return box;
   }
 
-  private Box createRequestProgramBox(
-      final ExternalControlInstallationNodeContribution contribution) {
-    Box box = Box.createVerticalBox();
-    JButton button = new JButton("request program");
-    button.addActionListener(new ActionListener() {
-
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        System.out.println("Request program button pushed");
-        contribution.requestProgram();
-        //contribution.makePopup();
-      }
-    });
-    box.add(button);
-    return box;
-  }
 
   private Component createSpacer(int height) {
     return Box.createRigidArea(new Dimension(0, height));

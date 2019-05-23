@@ -79,7 +79,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
 
   @Override
   public void generateScript(ScriptWriter writer) {
-    // TODO Auto-generated method stub
+	  requestProgram();
   }
 
   // IP helper functions
