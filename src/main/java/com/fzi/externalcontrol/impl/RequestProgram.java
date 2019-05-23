@@ -70,7 +70,8 @@ public class RequestProgram {
         
         while ( buff.ready()) {
         	result+="\n";
-        	result+=("    "+buff.readLine());
+        	//result+=("    "+buff.readLine());
+        	result+=(buff.readLine());
         }
        
         out.flush();
