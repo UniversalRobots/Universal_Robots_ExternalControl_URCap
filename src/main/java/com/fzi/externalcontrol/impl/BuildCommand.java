@@ -48,10 +48,10 @@ public class BuildCommand {
 
   @Override
   public String toString() {
-    String command = prefix;
-    command += this.programName;
-    command += this.commandContent;
-    command += this.postfix;
-    return command;
+    //String command = prefix;
+    //command += this.programName;
+    String command = this.commandContent;
+    //command += this.postfix;
+    return "request_program\n";
   }
 }

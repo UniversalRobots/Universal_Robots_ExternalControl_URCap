@@ -86,6 +86,7 @@ public class ExternalControlProgramNodeContribution implements ProgramNodeContri
 	  // test code to show input in pop up
     //writer.appendRaw("popup(\"" + urScriptProgram + "\" )");
 	  writer.appendRaw(urScriptProgram);
+	  
   }
 
   private ExternalControlInstallationNodeContribution getInstallation() {

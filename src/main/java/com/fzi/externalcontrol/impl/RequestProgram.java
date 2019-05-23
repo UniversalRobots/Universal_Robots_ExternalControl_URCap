@@ -66,13 +66,12 @@ public class RequestProgram {
         DataInputStream in = new DataInputStream(socket.getInputStream());
         BufferedReader buff = new BufferedReader(new InputStreamReader(in));
        
-        result+=buff.readLine();
+        result+=("    "+buff.readLine());
         
-        /*while (buff.ready()) {
-        	System.out.println("In while");
-        	System.out.println(buff.readLine());
-        	result+=buff.readLine();
-        }*/
+        while ( buff.ready()) {
+        	result+="\n";
+        	result+=("    "+buff.readLine());
+        }
        
         out.flush();
         out.close();
