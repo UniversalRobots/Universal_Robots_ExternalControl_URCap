@@ -39,10 +39,9 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputFactory;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 
 public class ExternalControlInstallationNodeContribution implements InstallationNodeContribution {
-  private static final String HOST_IP = "192.168.0.5"; // "127.0.0.1";
+  private static final String HOST_IP = "192.168.0.4"; // "127.0.0.1";
   private static final String PORT_NR = "50002";
-  private final RequestProgram sender;
-  private static final String DEFAULT_IP = "192.168.0.5";
+  private static final String DEFAULT_IP = "192.168.0.4";
   private static final String DEFAULT_PORT = "50002";
   private DataModel model;
   private final InstallationAPI installationApi;
@@ -60,7 +59,6 @@ public class ExternalControlInstallationNodeContribution implements Installation
                                .getKeyboardInputFactory();
     this.model = model;
     this.view = view;
-    this.sender = new RequestProgram(getHostIP(), getHostPort());
   }
 
   @Override
@@ -78,7 +76,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
     // sending the String "request_program" to start socket communication
     /* String urScriptAsString = sender.sendCommand("request_program\n");
       System.out.println("urScriptAsString: " + urScriptAsString);  */
-
+	RequestProgram sender = new RequestProgram(getHostIP(), getHostPort());
     String urScriptAsString = sender.sendCommand("request_program\n");
     BuildCommand urScriptProgram = new BuildCommand("URScript");
     urScriptProgram.insertString(urScriptAsString);
