@@ -27,11 +27,6 @@ package com.fzi.externalcontrol.impl;
 
 import com.ur.urcap.api.contribution.InstallationNodeContribution;
 import com.ur.urcap.api.contribution.installation.InstallationAPIProvider;
-import com.ur.urcap.api.contribution.program.ProgramAPIProvider;
-import com.ur.urcap.api.domain.InstallationAPI;
-import com.ur.urcap.api.domain.ProgramAPI;
-import com.ur.urcap.api.domain.SystemAPI;
-import com.ur.urcap.api.domain.UserInterfaceAPI;
 import com.ur.urcap.api.domain.data.DataModel;
 import com.ur.urcap.api.domain.script.ScriptWriter;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputCallback;
@@ -39,26 +34,28 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardInputFactory;
 import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 
 public class ExternalControlInstallationNodeContribution implements InstallationNodeContribution {
-  private static final String HOST_IP = "192.168.0.4"; // "127.0.0.1";
-  private static final String PORT_NR = "50002";
-  private static final String DEFAULT_IP = "192.168.0.4";
+  private static final String HOST_IP = "host_ip";
+  private static final String PORT_NR = "port_nr";
+  private String urScriptProgram = "";
+  private static final String DEFAULT_IP = "192.168.56.1";
   private static final String DEFAULT_PORT = "50002";
   private DataModel model;
-  private final InstallationAPI installationApi;
-  private BuildCommand urScriptProgram;
   private final ExternalControlInstallationNodeView view;
   private final KeyboardInputFactory keyboardFactory;
 
-  public ExternalControlInstallationNodeContribution(
-      InstallationAPIProvider installationApiProvider, ExternalControlInstallationNodeView view,
-      DataModel model) {
-    this.installationApi = installationApiProvider.getInstallationAPI();
-
-    this.keyboardFactory = installationApiProvider.getUserInterfaceAPI()
-                               .getUserInteraction()
-                               .getKeyboardInputFactory();
+  public ExternalControlInstallationNodeContribution(InstallationAPIProvider apiProvider,
+      ExternalControlInstallationNodeView view, DataModel model) {
+    this.keyboardFactory =
+        apiProvider.getUserInterfaceAPI().getUserInteraction().getKeyboardInputFactory();
     this.model = model;
     this.view = view;
+  }
+
+  public void requestProgram() {
+    BuildCommand command = new BuildCommand("requestProgram");
+    command.appendLine("request_program");
+    RequestProgram sender = new RequestProgram(getHostIP(), getHostPort());
+    urScriptProgram = sender.sendCommand(command);
   }
 
   @Override
@@ -73,29 +70,9 @@ public class ExternalControlInstallationNodeContribution implements Installation
 
   @Override
   public void generateScript(ScriptWriter writer) {
-    // sending the String "request_program" to start socket communication
-    /* String urScriptAsString = sender.sendCommand("request_program\n");
-      System.out.println("urScriptAsString: " + urScriptAsString);  */
-	RequestProgram sender = new RequestProgram(getHostIP(), getHostPort());
-    String urScriptAsString = sender.sendCommand("request_program\n");
-    BuildCommand urScriptProgram = new BuildCommand("URScript");
-    urScriptProgram.insertString(urScriptAsString);
-
-    setUrScriptProgram(urScriptProgram);
+	  requestProgram();
   }
 
-  /*
-  private ExternalControlInstallationNodeContribution getInstallation() {
-	    return programAPI.getInstallationNode(ExternalControlInstallationNodeContribution.class);
-	  }
-  
-  private ExternalControlProgramNodeContribution getProgram() {
-	  this.installationApi.get
-	    return programAPI.getInstallationNode(ExternalControlInstallationNodeContribution.class);
-	  }*/
-  
-  
-  
   // IP helper functions
   public void setHostIP(String ip) {
     if ("".equals(ip)) {
@@ -162,11 +139,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
     };
   }
 
-  public BuildCommand getUrScriptProgram() {
+  public String getUrScriptProgram() {
     return urScriptProgram;
-  }
-
-  public void setUrScriptProgram(BuildCommand urScriptProgram) {
-    this.urScriptProgram = urScriptProgram;
   }
 }
