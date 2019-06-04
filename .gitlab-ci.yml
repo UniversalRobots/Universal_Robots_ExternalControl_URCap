@@ -1,0 +1,52 @@
+image: ids-git.fzi.de:5555/continuous_integration/ci_docker_images/ubuntu_16.04_ros
+
+variables:
+  SDK_VERSION: 1.6.1
+
+before_script:
+  - pushd ${HOME}
+  - apt-get -y update
+  - apt-get -y install default-jdk maven unzip dialog sshpass
+  - curl -o sdk-${SDK_VERSION}.zip https://s3-eu-west-1.amazonaws.com/urplus-developer-site/sdk/sdk-${SDK_VERSION}.zip
+  - unzip sdk-${SDK_VERSION}.zip
+  - mvn install:install-file -Dfile=artifacts/api/1.6.0/com.ur.urcap.api-1.6.0.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.6.0 -Dpackaging=jar -q
+  - mvn install:install-file -Dfile=artifacts/api/1.6.0/com.ur.urcap.api-1.6.0-javadoc.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.6.0 -Dpackaging=jar -Dclassifier=javadoc -q
+  - mvn install:install-file -Dfile=artifacts/api/1.6.0/com.ur.urcap.api-1.6.0-sources.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.6.0 -Dpackaging=jar -Dclassifier=sources -q
+  - mvn install:install-file -Dfile=artifacts/archetype/com.ur.urcap.archetype-1.6.1.jar -DgroupId=com.ur.urcap -DartifactId=archetype -Dversion=1.6.1 -Dpackaging=jar -q
+  - mvn install:install-file -Dfile=artifacts/api/1.5.0/com.ur.urcap.api-1.5.0.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.5.0 -Dpackaging=jar -q
+  - mvn install:install-file -Dfile=artifacts/api/1.5.0/com.ur.urcap.api-1.5.0-javadoc.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.5.0 -Dpackaging=jar -Dclassifier=javadoc -q
+  - mvn install:install-file -Dfile=artifacts/api/1.5.0/com.ur.urcap.api-1.5.0-sources.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.5.0 -Dpackaging=jar -Dclassifier=sources -q
+  - mvn install:install-file -Dfile=artifacts/api/1.4.0/com.ur.urcap.api-1.4.0.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.4.0 -Dpackaging=jar -q
+  - mvn install:install-file -Dfile=artifacts/api/1.4.0/com.ur.urcap.api-1.4.0-javadoc.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.4.0 -Dpackaging=jar -Dclassifier=javadoc -q
+  - mvn install:install-file -Dfile=artifacts/api/1.4.0/com.ur.urcap.api-1.4.0-sources.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.4.0 -Dpackaging=jar -Dclassifier=sources -q
+  - mvn install:install-file -Dfile=artifacts/api/1.3.0/com.ur.urcap.api-1.3.0.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.3.0 -Dpackaging=jar -q
+  - mvn install:install-file -Dfile=artifacts/api/1.3.0/com.ur.urcap.api-1.3.0-javadoc.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.3.0 -Dpackaging=jar -Dclassifier=javadoc -q
+  - mvn install:install-file -Dfile=artifacts/api/1.3.0/com.ur.urcap.api-1.3.0-sources.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.3.0 -Dpackaging=jar -Dclassifier=sources -q
+  - mvn install:install-file -Dfile=artifacts/api/1.2.56/com.ur.urcap.api-1.2.56.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.2.56 -Dpackaging=jar -q
+  - mvn install:install-file -Dfile=artifacts/api/1.2.56/com.ur.urcap.api-1.2.56-javadoc.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.2.56 -Dpackaging=jar -Dclassifier=javadoc -q
+  - mvn install:install-file -Dfile=artifacts/api/1.2.56/com.ur.urcap.api-1.2.56-sources.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.2.56 -Dpackaging=jar -Dclassifier=sources -q
+  - mvn install:install-file -Dfile=artifacts/api/1.1.0/com.ur.urcap.api-1.1.0-69.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.1.0-69 -Dpackaging=jar -q
+  - mvn install:install-file -Dfile=artifacts/api/1.1.0/com.ur.urcap.api-1.1.0-69-javadoc.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.1.0-69 -Dpackaging=jar -Dclassifier=javadoc -q
+  - mvn install:install-file -Dfile=artifacts/api/1.1.0/com.ur.urcap.api-1.1.0-69-sources.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.1.0-69 -Dpackaging=jar -Dclassifier=sources -q
+  - mvn install:install-file -Dfile=artifacts/api/1.0.0/com.ur.urcap.api-1.0.0.30.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.0.0.30 -Dpackaging=jar -q
+  - mvn install:install-file -Dfile=artifacts/api/1.0.0/com.ur.urcap.api-1.0.0.30-javadoc.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.0.0.30 -Dpackaging=jar -Dclassifier=javadoc -q
+  - mvn install:install-file -Dfile=artifacts/api/1.0.0/com.ur.urcap.api-1.0.0.30-sources.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.0.0.30 -Dpackaging=jar -Dclassifier=sources -q
+  - mvn install:install-file -Dfile=artifacts/other/commons-httpclient-3.1.0.0.jar -DgroupId=commons-httpclient -DartifactId=commons-httpclient -Dversion=3.1.0.0 -Dpackaging=jar -q
+  - mvn install:install-file -Dfile=artifacts/other/ws-commons-util-1.0.2.0.jar -DgroupId=org.apache.ws.commons.util -DartifactId=ws-commons-util -Dversion=1.0.2.0 -Dpackaging=jar -q
+  - mvn install:install-file -Dfile=artifacts/other/xmlrpc-client-3.1.3.0.jar -DgroupId=org.apache.xmlrpc -DartifactId=xmlrpc-client -Dversion=3.1.3.0 -Dpackaging=jar -q
+  - mvn install:install-file -Dfile=artifacts/other/xmlrpc-common-3.1.3.0.jar -DgroupId=org.apache.xmlrpc -DartifactId=xmlrpc-common -Dversion=3.1.3.0 -Dpackaging=jar -q
+  - popd
+
+
+build:
+  tags:
+    - docker
+  script:
+    - ls -l
+    - mvn install
+  artifacts:
+    paths:
+      - target/*.urcap
+    expire_in: 1 week
+
+
