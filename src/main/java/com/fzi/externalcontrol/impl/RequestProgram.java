@@ -46,7 +46,7 @@ public class RequestProgram {
   }
 
   public String sendCommand(BuildCommand scriptCommand) {
-    String command = commandToString(scriptCommand);
+    String command = scriptCommand.toString();
     String result = "";
     try {
       // socket creation
@@ -78,9 +78,5 @@ public class RequestProgram {
       System.err.println(e);
     }
     return result;
-  }
-
-  public String commandToString(BuildCommand scriptCommand) {
-    return scriptCommand.toString();
   }
 }
