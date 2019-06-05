@@ -45,11 +45,6 @@ public class RequestProgram {
     this.portNr = Integer.parseInt(portNr);
   }
 
-  public RequestProgram(String hostIp, int portNr) {
-    this.hostIp = hostIp;
-    this.portNr = portNr;
-  }
-
   public String sendCommand(BuildCommand scriptCommand) {
     String command = commandToString(scriptCommand);
     String result = "";
