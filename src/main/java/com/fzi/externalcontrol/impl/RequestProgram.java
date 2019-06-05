@@ -58,23 +58,23 @@ public class RequestProgram {
       Socket socket = new Socket(hostIp, portNr);
       if (socket.isConnected()) {
         // output stream creation
-        DataOutputStream out= new DataOutputStream(socket.getOutputStream());
+        DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
         // send command
         out.write(command.getBytes("US-ASCII"));
-        
+
         DataInputStream in = new DataInputStream(socket.getInputStream());
         BufferedReader buff = new BufferedReader(new InputStreamReader(in));
-       
+
         // wait for buffer...
-        result+=(" "+buff.readLine());
-        
-        while ( buff.ready()) {
-        	result+="\n";
-        	result+=(" "+buff.readLine());
-        	//result+=(buff.readLine());  
+        result += (" " + buff.readLine());
+
+        while (buff.ready()) {
+          result += "\n";
+          result += (" " + buff.readLine());
+          // result+=(buff.readLine());
         }
-       
+
         out.flush();
         out.close();
       }

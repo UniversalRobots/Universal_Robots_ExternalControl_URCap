@@ -77,8 +77,8 @@ public class ExternalControlProgramNodeContribution implements ProgramNodeContri
 
   @Override
   public void generateScript(ScriptWriter writer) {
-	  String urScriptProgram = getInstallation().getUrScriptProgram();
-	  writer.appendRaw(urScriptProgram);  
+    String urScriptProgram = getInstallation().getUrScriptProgram();
+    writer.appendRaw(urScriptProgram);
   }
 
   private ExternalControlInstallationNodeContribution getInstallation() {
