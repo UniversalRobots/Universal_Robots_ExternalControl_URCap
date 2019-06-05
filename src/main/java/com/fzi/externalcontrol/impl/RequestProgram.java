@@ -45,8 +45,8 @@ public class RequestProgram {
     this.portNr = Integer.parseInt(portNr);
   }
 
-  public String sendCommand(BuildCommand scriptCommand) {
-    String command = scriptCommand.toString();
+  public String sendCommand(String command) {
+    // String command = scriptCommand.toString();
     String result = "";
     try {
       // socket creation
@@ -67,7 +67,6 @@ public class RequestProgram {
         while (buff.ready()) {
           result += "\n";
           result += (" " + buff.readLine());
-          // result+=(buff.readLine());
         }
 
         out.flush();

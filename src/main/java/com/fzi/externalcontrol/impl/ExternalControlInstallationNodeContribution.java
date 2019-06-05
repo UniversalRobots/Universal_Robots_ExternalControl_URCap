@@ -37,7 +37,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
   private static final String HOST_IP = "host_ip";
   private static final String PORT_NR = "port_nr";
   private String urScriptProgram = "";
-  private static final String DEFAULT_IP = "192.168.56.5";
+  private static final String DEFAULT_IP = "192.168.56.1";
   private static final String DEFAULT_PORT = "50002";
   private DataModel model;
   private final ExternalControlInstallationNodeView view;
@@ -63,10 +63,8 @@ public class ExternalControlInstallationNodeContribution implements Installation
 
   @Override
   public void generateScript(ScriptWriter writer) {
-    BuildCommand command = new BuildCommand("requestProgram");
-    command.appendLine("request_program");
     RequestProgram sender = new RequestProgram(getHostIP(), getHostPort());
-    urScriptProgram = sender.sendCommand(command);
+    urScriptProgram = sender.sendCommand("request_program\n");
   }
 
   // IP helper functions
