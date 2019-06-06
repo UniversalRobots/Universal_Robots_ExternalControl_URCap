@@ -78,13 +78,7 @@ public class ExternalControlProgramNodeContribution implements ProgramNodeContri
   @Override
   public void generateScript(ScriptWriter writer) {
     String urScriptProgram = getInstallation().getUrScriptProgram();
-    if (urScriptProgram != "") {
-      writer.appendRaw(urScriptProgram);
-    } else {
-      writer.appendRaw("popup(\""
-          + "Connection to the remote PC could not be established. This is ok if the program is only to be saved. In case of execution a connection to the remote PC is required. "
-          + "\" )");
-    }
+    writer.appendRaw(urScriptProgram);
   }
 
   private ExternalControlInstallationNodeContribution getInstallation() {
