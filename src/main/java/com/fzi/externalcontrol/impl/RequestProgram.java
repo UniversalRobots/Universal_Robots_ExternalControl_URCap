@@ -74,13 +74,11 @@ public class RequestProgram {
       }
       socket.close();
     } catch (IOException e) {
-    	
-      System.err.println(e);
-      result = "popup(\"" 
-      + "The connection to the remote PC could not be established. "
-      + "\", title =\""
-      + "connection refused"
-      + "\")";
+      result = "popup(\""
+          + "The connection to the remote PC could not be established. "
+          + "\", title =\""
+          + "connection refused"
+          + "\")";
     }
     return result;
   }

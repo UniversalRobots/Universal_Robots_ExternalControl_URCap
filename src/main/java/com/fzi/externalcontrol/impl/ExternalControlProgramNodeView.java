@@ -79,6 +79,9 @@ public class ExternalControlProgramNodeView
     createGainServoJ(advancedParamsPanel, provider, gainServoj_TF, "Gain servoj: ", "0");
 
     advancedParamsPanel.setVisible(false);
+
+    // cleanup view for beta release
+    panel.setVisible(false);
   }
 
   public void setAdvancedParam_CB(boolean checked) {
