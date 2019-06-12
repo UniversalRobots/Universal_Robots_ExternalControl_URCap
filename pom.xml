@@ -21,7 +21,7 @@
 		<urcap.symbolicname>com.fzi.externalcontrol</urcap.symbolicname>
 		<urcap.vendor>FZI Research Center for Information Technology</urcap.vendor>
 		<urcap.contactAddress>Haid-und-Neu-Straße 10-14, 76131 Karlsruhe</urcap.contactAddress>
-		<urcap.copyright>Copyright (C) 2009-${copyright.year} Universal Robots. All Rights Reserved</urcap.copyright>
+		<urcap.copyright>Copyright (C) ${copyright.year} FZI Research Center for Information Technology</urcap.copyright>
 		<urcap.description>URcap which enables external control</urcap.description>
 		<urcap.licenseType>Apache License, Version 2.0</urcap.licenseType>
 		<!--********************** END OF URCAP META DATA **********************-->
