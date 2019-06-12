@@ -63,7 +63,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
 
   @Override
   public void generateScript(ScriptWriter writer) {
-    RequestProgram sender = new RequestProgram(getHostIP(), getHostPort());
+    RequestProgram sender = new RequestProgram(getHostIP(), getCustomPort());
     urScriptProgram = sender.sendCommand("request_program\n");
   }
 
@@ -109,7 +109,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
     }
   }
 
-  public String getHostPort() {
+  public String getCustomPort() {
     return model.get(PORT_NR, DEFAULT_PORT);
   }
 
@@ -119,7 +119,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
 
   public KeyboardTextInput getInputForPortTextField() {
     KeyboardTextInput keyboInput = keyboardFactory.createStringKeyboardInput();
-    keyboInput.setInitialValue(getHostPort());
+    keyboInput.setInitialValue(getCustomPort());
     return keyboInput;
   }
 

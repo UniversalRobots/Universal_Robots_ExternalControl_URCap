@@ -87,7 +87,7 @@ public class ExternalControlInstallationNodeView
     box.add(label);
     // create port Textfield
     textFieldPort = new JTextField(15);
-    textFieldPort.setText(contribution.getHostPort());
+    textFieldPort.setText(contribution.getCustomPort());
     textFieldPort.setFocusable(false);
     textFieldPort.addMouseListener(new MouseAdapter() {
       @Override
