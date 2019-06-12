@@ -60,7 +60,9 @@ public class ExternalControlProgramNodeContribution implements ProgramNodeContri
   }
 
   @Override
-  public void openView() {}
+  public void openView() {
+    view.updateInfoLabel(getInstallation().getHostIP(), getInstallation().getCustomPort());
+  }
 
   @Override
   public void closeView() {}

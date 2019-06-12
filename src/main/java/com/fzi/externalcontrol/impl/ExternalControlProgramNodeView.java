@@ -48,6 +48,7 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 public class ExternalControlProgramNodeView
     implements SwingProgramNodeView<ExternalControlProgramNodeContribution> {
   private JCheckBox advancedParam_CB;
+  private JLabel infoLabel;
   private JPanel standardParamsPanel;
   private JPanel advancedParamsPanel;
   private JTextField maxLostPackages_TF = new JTextField(15);
@@ -59,17 +60,21 @@ public class ExternalControlProgramNodeView
   public void buildUI(
       JPanel panel, ContributionProvider<ExternalControlProgramNodeContribution> provider) {
     panel.setLayout(new GridLayout(2, 1, 5, 5));
+    infoLabel = new JLabel();
+    infoLabel.setFont(new Font("Serif", Font.BOLD, 14));
+    panel.add(infoLabel);
+
+    /*
     standardParamsPanel = new JPanel();
     JLabel standardParamsLabel = new JLabel("Standard Parameters: ");
     standardParamsLabel.setFont(new Font("Serif", Font.BOLD, 20));
     standardParamsPanel.add(standardParamsLabel);
+    panel.add(standardParamsPanel);
 
     advancedParamsPanel = new JPanel();
     JLabel advancedParamsLabel = new JLabel("Advanced Parameters: ");
     advancedParamsLabel.setFont(new Font("Serif", Font.BOLD, 20));
     advancedParamsPanel.add(advancedParamsLabel);
-
-    panel.add(standardParamsPanel);
     panel.add(advancedParamsPanel);
 
     createMaxLostPackages(
@@ -77,11 +82,7 @@ public class ExternalControlProgramNodeView
     panel.add(createAdvancedParamBox(provider));
 
     createGainServoJ(advancedParamsPanel, provider, gainServoj_TF, "Gain servoj: ", "0");
-
-    advancedParamsPanel.setVisible(false);
-
-    // cleanup view for beta release
-    panel.setVisible(false);
+     */
   }
 
   public void setAdvancedParam_CB(boolean checked) {
@@ -161,5 +162,15 @@ public class ExternalControlProgramNodeView
 
   public void showAdvancedParameters(boolean visible) {
     advancedParamsPanel.setVisible(visible);
+  }
+
+  public void updateInfoLabel(String host_ip, String custom_port) {
+    infoLabel.setText("<html><body>"
+        + "The program enabling external control is requestet from the remote host.<br>"
+        + "As to that, the parameters are currently set as follows: <br><br>"
+        + "Host IP: " + host_ip + "<br>"
+        + "Custom port: " + custom_port + "<br><br><br>"
+        + "These settings can be altered via the Installtion tab."
+        + "<body><html>");
   }
 }
