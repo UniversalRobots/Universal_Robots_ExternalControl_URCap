@@ -1,4 +1,4 @@
-image: ids-git.fzi.de:5555/continuous_integration/ci_docker_images/ubuntu_16.04_ros
+image: ubuntu:xenial
 
 variables:
   SDK_VERSION: 1.6.1
@@ -6,7 +6,7 @@ variables:
 before_script:
   - pushd ${HOME}
   - apt-get -y update
-  - apt-get -y install default-jdk maven unzip dialog sshpass
+  - apt-get -y install default-jdk maven unzip dialog sshpass curl
   - curl -o sdk-${SDK_VERSION}.zip https://s3-eu-west-1.amazonaws.com/urplus-developer-site/sdk/sdk-${SDK_VERSION}.zip
   - unzip sdk-${SDK_VERSION}.zip
   - mvn install:install-file -Dfile=artifacts/api/1.6.0/com.ur.urcap.api-1.6.0.jar -DgroupId=com.ur.urcap -DartifactId=api -Dversion=1.6.0 -Dpackaging=jar -q
