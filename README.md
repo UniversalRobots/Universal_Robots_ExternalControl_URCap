@@ -2,6 +2,9 @@
 Package for external control of a UR robot. It supports UR3, UR5 and UR10 of CB3 as well as the e-series.
 
 ## prerequisites
+As this URCap is using swing to implement the user interface, the URCap library in version 1.3.0 or
+higher is required. Therefore the minimal PolyScope versions are 3.6 and 5.0.
+
 To enable external control of a UR robot from a remote PC, this URcap must be installed on the UR robot and the ur\_rtde\_driver has to be installed on the remote PC. 
 
 ## usage
