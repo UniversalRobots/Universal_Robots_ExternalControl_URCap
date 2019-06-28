@@ -170,7 +170,7 @@ public class ExternalControlProgramNodeView
         + "As to that, the parameters are currently set as follows: <br><br>"
         + "Host IP: " + host_ip + "<br>"
         + "Custom port: " + custom_port + "<br><br><br>"
-        + "These settings can be altered via the Installtion tab."
+        + "These settings can be altered via the Installation tab."
         + "<body><html>");
   }
 }
