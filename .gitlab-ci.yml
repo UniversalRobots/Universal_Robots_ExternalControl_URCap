@@ -1,7 +1,7 @@
 image: ubuntu:xenial
 
 variables:
-  SDK_VERSION: 1.4.4
+  SDK_VERSION: 1.6.1
 
 before_script:
   - pushd ${HOME}
