@@ -78,7 +78,7 @@ public class RequestProgram {
           + "The connection to the remote PC could not be established. "
           + "\", title =\""
           + "connection refused"
-          + "\")";
+          + "\")\nsync()";
     }
     return result;
   }
