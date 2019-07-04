@@ -69,7 +69,7 @@ public class ExternalControlProgramNodeContribution implements ProgramNodeContri
 
   @Override
   public String getTitle() {
-    return "ExternalControl";
+    return "Control by " + getInstallation().getName();
   }
 
   @Override

@@ -30,7 +30,6 @@ import com.ur.urcap.api.contribution.installation.ContributionConfiguration;
 import com.ur.urcap.api.contribution.installation.CreationContext;
 import com.ur.urcap.api.contribution.installation.InstallationAPIProvider;
 import com.ur.urcap.api.contribution.installation.swing.SwingInstallationNodeService;
-import com.ur.urcap.api.contribution.program.ProgramAPIProvider;
 import com.ur.urcap.api.domain.data.DataModel;
 
 import java.util.Locale;

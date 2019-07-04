@@ -41,6 +41,7 @@ public class ExternalControlInstallationNodeView
     implements SwingInstallationNodeView<ExternalControlInstallationNodeContribution> {
   private JTextField textFieldIP;
   private JTextField textFieldPort;
+  private JTextField textFieldName;
 
   public ExternalControlInstallationNodeView() {}
 
@@ -48,8 +49,10 @@ public class ExternalControlInstallationNodeView
   public void buildUI(
       JPanel panel, final ExternalControlInstallationNodeContribution contribution) {
     panel.add(createIPBox(contribution));
-    panel.add(createSpacer(60));
+    panel.add(createSpacer(200));
     panel.add(createPortBox(contribution));
+    panel.add(createSpacer(200));
+    panel.add(createNameBox(contribution));
   }
 
   public void UpdateIPTextField(String value) {
@@ -60,10 +63,14 @@ public class ExternalControlInstallationNodeView
     textFieldPort.setText(value);
   }
 
+  public void UpdateNameTextField(String value) {
+    textFieldName.setText(value);
+  }
+
   private Box createIPBox(final ExternalControlInstallationNodeContribution contribution) {
     Box box = Box.createVerticalBox();
     // create IP Label
-    JLabel label = new JLabel("Please setup the remote host's IP: ");
+    JLabel label = new JLabel("Host IP: ");
     box.add(label);
     // create IP Textfield
     textFieldIP = new JTextField(15);
@@ -83,7 +90,7 @@ public class ExternalControlInstallationNodeView
   private Box createPortBox(final ExternalControlInstallationNodeContribution contribution) {
     Box box = Box.createVerticalBox();
     // create port Label
-    JLabel label = new JLabel("Please setup the custom port: ");
+    JLabel label = new JLabel("Custom port: ");
     box.add(label);
     // create port Textfield
     textFieldPort = new JTextField(15);
@@ -97,6 +104,26 @@ public class ExternalControlInstallationNodeView
       }
     });
     box.add(textFieldPort);
+    return box;
+  }
+
+  private Box createNameBox(final ExternalControlInstallationNodeContribution contribution) {
+    Box box = Box.createVerticalBox();
+    // create name Label
+    JLabel label = new JLabel("Host name");
+    box.add(label);
+    // create name Textfield
+    textFieldName = new JTextField(15);
+    textFieldName.setText(contribution.getHostIP());
+    textFieldName.setFocusable(false);
+    textFieldName.addMouseListener(new MouseAdapter() {
+      @Override
+      public void mousePressed(MouseEvent e) {
+        KeyboardTextInput keyboardInput = contribution.getInputForNameTextField();
+        keyboardInput.show(textFieldPort, contribution.getCallbackForNameTextField());
+      }
+    });
+    box.add(textFieldName);
     return box;
   }
 

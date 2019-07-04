@@ -36,9 +36,11 @@ import com.ur.urcap.api.domain.userinteraction.keyboard.KeyboardTextInput;
 public class ExternalControlInstallationNodeContribution implements InstallationNodeContribution {
   private static final String HOST_IP = "host_ip";
   private static final String PORT_NR = "port_nr";
+  private static final String NAME = "name";
   private String urScriptProgram = "";
   private static final String DEFAULT_IP = "192.168.56.1";
   private static final String DEFAULT_PORT = "50002";
+  private static final String DEFAULT_NAME = DEFAULT_IP;
   private DataModel model;
   private final ExternalControlInstallationNodeView view;
   private final KeyboardInputFactory keyboardFactory;
@@ -129,6 +131,39 @@ public class ExternalControlInstallationNodeContribution implements Installation
       public void onOk(String value) {
         setHostPort(value);
         view.UpdatePortTextField(value);
+      }
+    };
+  }
+
+  // name helper functions
+  public void setName(String name) {
+    if ("".equals(name)) {
+      resetToDefaultName();
+    } else {
+      model.set(NAME, name);
+    }
+  }
+
+  public String getName() {
+    return model.get(NAME, DEFAULT_NAME);
+  }
+
+  private void resetToDefaultName() {
+    model.set(NAME, DEFAULT_NAME);
+  }
+
+  public KeyboardTextInput getInputForNameTextField() {
+    KeyboardTextInput keyboInput = keyboardFactory.createStringKeyboardInput();
+    keyboInput.setInitialValue(getName());
+    return keyboInput;
+  }
+
+  public KeyboardInputCallback<String> getCallbackForNameTextField() {
+    return new KeyboardInputCallback<String>() {
+      @Override
+      public void onOk(String value) {
+        setName(value);
+        view.UpdateNameTextField(value);
       }
     };
   }
