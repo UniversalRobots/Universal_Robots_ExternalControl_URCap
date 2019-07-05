@@ -114,7 +114,7 @@ public class ExternalControlInstallationNodeView
     box.add(label);
     // create name Textfield
     textFieldName = new JTextField(15);
-    textFieldName.setText(contribution.getHostIP());
+    textFieldName.setText(contribution.getName());
     textFieldName.setFocusable(false);
     textFieldName.addMouseListener(new MouseAdapter() {
       @Override
