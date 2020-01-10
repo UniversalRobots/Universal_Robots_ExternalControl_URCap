@@ -168,8 +168,10 @@ public class ExternalControlInstallationNodeContribution implements Installation
   }
 
   public String getUrScriptProgram() {
-	RequestProgram sender = new RequestProgram(getHostIP(), getCustomPort());
-	urScriptProgram = sender.sendCommand("request_program\n");
+	if (urScriptProgram == "") {
+	  RequestProgram sender = new RequestProgram(getHostIP(), getCustomPort());
+	  urScriptProgram = sender.sendCommand("request_program\n");
+	}
     return urScriptProgram;
   }
 }
