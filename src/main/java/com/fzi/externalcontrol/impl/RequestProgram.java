@@ -74,11 +74,9 @@ public class RequestProgram {
       }
       socket.close();
     } catch (IOException e) {
-      result = "popup(\""
-          + "The connection to the remote PC could not be established. "
-          + "\", title =\""
-          + "connection refused"
-          + "\")\nsync()";
+      result = "popup(\"The connection to the remote PC could not be established. \","
+          + "\"connection refused\", False, True, blocking=True)\n"
+          + "sync()";
     }
     return result;
   }
