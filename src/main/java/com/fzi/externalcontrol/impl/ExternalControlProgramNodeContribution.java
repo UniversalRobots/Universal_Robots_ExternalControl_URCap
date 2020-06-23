@@ -80,7 +80,11 @@ public class ExternalControlProgramNodeContribution implements ProgramNodeContri
   @Override
   public void generateScript(ScriptWriter writer) {
     String urScriptProgram = getInstallation().getUrScriptProgram();
+    String uniqueFunName = "fun_" + getInstallation().IncrementInstanceCounter() + "()";
+    writer.appendLine("def " + uniqueFunName + ":");
     writer.appendRaw(urScriptProgram);
+    writer.appendLine("end");
+    writer.appendLine(uniqueFunName);
   }
 
   private ExternalControlInstallationNodeContribution getInstallation() {

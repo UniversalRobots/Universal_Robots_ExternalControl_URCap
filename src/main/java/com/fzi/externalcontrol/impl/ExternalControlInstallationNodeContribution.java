@@ -44,6 +44,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
   private DataModel model;
   private final ExternalControlInstallationNodeView view;
   private final KeyboardInputFactory keyboardFactory;
+  private int instanceCounter = 0;
 
   public ExternalControlInstallationNodeContribution(InstallationAPIProvider apiProvider,
       ExternalControlInstallationNodeView view, DataModel model) {
@@ -170,5 +171,9 @@ public class ExternalControlInstallationNodeContribution implements Installation
 
   public String getUrScriptProgram() {
     return urScriptProgram;
+  }
+  
+  public int IncrementInstanceCounter() {
+    return this.instanceCounter++;
   }
 }
