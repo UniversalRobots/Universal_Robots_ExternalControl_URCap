@@ -38,6 +38,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
   private static final String PORT_NR = "port_nr";
   private static final String NAME = "name";
   private String urScriptProgram = "";
+  private String urScriptInstall = "";
   private static final String DEFAULT_IP = "192.168.56.1";
   private static final String DEFAULT_PORT = "50002";
   private static final String DEFAULT_NAME = DEFAULT_IP;
@@ -67,7 +68,12 @@ public class ExternalControlInstallationNodeContribution implements Installation
   @Override
   public void generateScript(ScriptWriter writer) {
     RequestProgram sender = new RequestProgram(getHostIP(), getCustomPort());
+    urScriptInstall = sender.sendCommand("request_install\n");
     urScriptProgram = sender.sendCommand("request_program\n");
+    
+    if (!urScriptInstall.contains("null")) {
+      writer.appendRaw(urScriptInstall); 
+    }
   }
 
   // IP helper functions
