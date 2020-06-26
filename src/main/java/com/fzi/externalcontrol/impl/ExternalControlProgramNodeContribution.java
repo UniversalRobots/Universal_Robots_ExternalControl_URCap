@@ -83,6 +83,7 @@ public class ExternalControlProgramNodeContribution implements ProgramNodeContri
     String uniqueFunName = "fun_" + getInstallation().IncrementInstanceCounter() + "()";
     writer.appendLine("def " + uniqueFunName + ":");
     writer.appendRaw(urScriptProgram);
+    writer.appendLine("");
     writer.appendLine("end");
     writer.appendLine(uniqueFunName);
   }
