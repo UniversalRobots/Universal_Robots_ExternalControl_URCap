@@ -29,6 +29,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 public class RequestProgram {
@@ -50,7 +51,12 @@ public class RequestProgram {
     String result = "";
     try {
       // socket creation
-      Socket socket = new Socket(hostIp, portNr);
+      Socket socket = new Socket();
+
+      // 5 second timeout (make configurable?)
+      int timeout = 5*1000;
+      socket.connect(new InetSocketAddress(this.hostIp, this.portNr), timeout);
+
       if (socket.isConnected()) {
         // output stream creation
         DataOutputStream out = new DataOutputStream(socket.getOutputStream());
