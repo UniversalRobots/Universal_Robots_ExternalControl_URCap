@@ -80,9 +80,9 @@ public class RequestProgram {
       }
       socket.close();
     } catch (IOException e) {
-      result = "popup(\"The connection to the remote PC could not be established. \","
-          + "\"connection refused\", False, True, blocking=True)\n"
-          + "sync()";
+      result = String.format("popup(\"The connection to the remote PC could not be established. Reason: %s\","
+          + "\"Receive program failed\", False, True, blocking=True)\n"
+          + "sync()", e.getMessage());
     }
     return result;
   }
