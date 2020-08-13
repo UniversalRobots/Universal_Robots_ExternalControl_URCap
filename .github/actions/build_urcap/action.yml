@@ -1,0 +1,6 @@
+# action.yml
+name: 'Build URCap'
+description: 'Builds a URCap in a container'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
