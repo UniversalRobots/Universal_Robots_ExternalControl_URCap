@@ -65,7 +65,8 @@ public class ExternalControlInstallationNodeContribution implements Installation
 
   @Override
   public void generateScript(ScriptWriter writer) {
-    
+    // Make sure the program gets requested at least once
+    urScriptProgram = "";
   }
 
   // IP helper functions
