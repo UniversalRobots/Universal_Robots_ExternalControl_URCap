@@ -56,6 +56,9 @@ public class RequestProgram {
       // 5 second timeout (make configurable?)
       int timeout = 5*1000;
       socket.connect(new InetSocketAddress(this.hostIp, this.portNr), timeout);
+      System.out.println("hostIp is: " + this.hostIp);
+      System.out.println("portNr is: " + this.portNr);
+
 
       if (socket.isConnected()) {
         // output stream creation
@@ -80,7 +83,7 @@ public class RequestProgram {
       }
       socket.close();
     } catch (IOException e) {
-      result = String.format("popup(\"The connection to the remote PC could not be established. Reason: %s\","
+      result = String.format("popup(\"The connection to the remote PC at " + this.hostIp + ":" + this.portNr + " could not be established. Reason: %s\","
           + "\"Receive program failed\", False, True, blocking=True)\n"
           + "sync()", e.getMessage());
     }
