@@ -37,7 +37,8 @@ public class ExternalControlInstallationNodeContribution implements Installation
   private static final String HOST_IP = "host_ip";
   private static final String PORT_NR = "port_nr";
   private static final String NAME = "name";
-  private String urScriptProgram = "";
+  private String urScriptHeader = "";
+  private String urScriptControlLoop = "";
   private static final String DEFAULT_IP = "192.168.56.1";
   private static final String DEFAULT_PORT = "50002";
   private static final String DEFAULT_NAME = DEFAULT_IP;
@@ -65,8 +66,13 @@ public class ExternalControlInstallationNodeContribution implements Installation
 
   @Override
   public void generateScript(ScriptWriter writer) {
-    // Make sure the program gets requested at least once
-    urScriptProgram = "";
+    urScriptHeader = "";
+    urScriptControlLoop = "";
+    RequestProgram sender = new RequestProgram(getHostIP(), getCustomPort());
+    String urScriptProgram = sender.sendCommand("request_program\n");
+
+    findHeaderAndControlLoop(urScriptProgram);
+    writer.appendRaw(urScriptHeader);
   }
 
   // IP helper functions
@@ -169,10 +175,35 @@ public class ExternalControlInstallationNodeContribution implements Installation
   }
 
   public String getUrScriptProgram() {
-	if (urScriptProgram == "") {
-	  RequestProgram sender = new RequestProgram(getHostIP(), getCustomPort());
-	  urScriptProgram = sender.sendCommand("request_program\n");
-	}
-    return urScriptProgram;
+    return urScriptControlLoop;
+  }
+
+  public void findHeaderAndControlLoop(String script) {
+    int it = 0;
+    Boolean controlLoopFound = false;
+    String[] splitData = script.split("\n");
+
+    while (it < splitData.length) {
+      // Find the first line of the control loop
+      if (splitData[it].startsWith(" socket_open(")) {
+        controlLoopFound = true;
+        break;
+      }
+      it += 1;
+    }
+
+    if (controlLoopFound) {
+      for (int i = 0; i < splitData.length; ++i) {
+        if (i < it) {
+          urScriptHeader +=  splitData[i] + "\n";
+        }
+        else if (i >= it) {
+          urScriptControlLoop += splitData[i] + "\n";
+        }
+      }
+    }
+    else {
+      urScriptControlLoop = script;
+    }
   }
 }
