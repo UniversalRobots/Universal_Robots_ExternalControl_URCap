@@ -37,6 +37,10 @@ public class RequestProgram {
   private final String hostIp;
   // custom port
   private final int portNr;
+  // header of the requested program
+  private String header;
+  // control loop of the requested program
+  private String controlLoop;
 
   /*
    * Default constructor
@@ -44,6 +48,22 @@ public class RequestProgram {
   public RequestProgram(String hostIp, String portNr) {
     this.hostIp = hostIp;
     this.portNr = Integer.parseInt(portNr);
+    this.header = "";
+    this.controlLoop = "";
+  }
+
+  public void requestAndSplitProgram() {
+    String program = sendCommand("request_program\n");
+    // Split program into header and control loop
+    splitProgram(program);
+  }
+
+  public String getHeader() {
+    return this.header;
+  }
+
+  public String getControlLoop() {
+    return this.controlLoop;
   }
 
   public String sendCommand(String command) {
@@ -88,5 +108,37 @@ public class RequestProgram {
           + "sync()", e.getMessage());
     }
     return result;
+  }
+
+  public void splitProgram(String program) {
+    this.header = "";
+    this.controlLoop = "";
+    Boolean headerEndFound = false;
+    Boolean headerBeginFound = false;
+    String[] programArray = program.split("\n");
+
+    for (int it = 0; it < programArray.length; ++it) {
+      if (programArray[it].matches("(.*)# HEADER_BEGIN(.*)")) {
+        headerBeginFound = true;
+        this.header += programArray[it] + "\n";
+      }
+      else if (programArray[it].matches("(.*)# HEADER_END(.*)") && headerBeginFound) {
+        headerEndFound = true;
+        headerBeginFound = false;
+        this.header += programArray[it] + "\n";
+      }
+      else if (headerBeginFound) {
+        this.header += programArray[it] + "\n";
+      }
+      else if (headerEndFound) {
+        this.controlLoop += programArray[it] + "\n";
+      }
+    }
+
+    if (headerEndFound == false) {
+      System.out.println("Unable to find anchors defining header, the program will not be split");
+      this.header = "";
+      this.controlLoop = program;
+    }
   }
 }

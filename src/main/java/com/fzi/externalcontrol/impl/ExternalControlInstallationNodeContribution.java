@@ -37,14 +37,14 @@ public class ExternalControlInstallationNodeContribution implements Installation
   private static final String HOST_IP = "host_ip";
   private static final String PORT_NR = "port_nr";
   private static final String NAME = "name";
-  private String urScriptHeader = "";
-  private String urScriptControlLoop = "";
   private static final String DEFAULT_IP = "192.168.56.1";
   private static final String DEFAULT_PORT = "50002";
   private static final String DEFAULT_NAME = DEFAULT_IP;
   private DataModel model;
   private final ExternalControlInstallationNodeView view;
   private final KeyboardInputFactory keyboardFactory;
+  private RequestProgram sender;
+  private boolean programRequested;
 
   public ExternalControlInstallationNodeContribution(InstallationAPIProvider apiProvider,
       ExternalControlInstallationNodeView view, DataModel model) {
@@ -66,13 +66,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
 
   @Override
   public void generateScript(ScriptWriter writer) {
-    urScriptHeader = "";
-    urScriptControlLoop = "";
-    RequestProgram sender = new RequestProgram(getHostIP(), getCustomPort());
-    String urScriptProgram = sender.sendCommand("request_program\n");
-
-    findHeaderAndControlLoop(urScriptProgram);
-    writer.appendRaw(urScriptHeader);
+    programRequested = false;
   }
 
   // IP helper functions
@@ -174,36 +168,17 @@ public class ExternalControlInstallationNodeContribution implements Installation
     };
   }
 
-  public String getUrScriptProgram() {
-    return urScriptControlLoop;
-  }
+  public String getControlLoop(ScriptWriter writer) {
+    if (programRequested == false) {
+      // Request and split the program
+      sender = new RequestProgram(getHostIP(), getCustomPort());
+      sender.requestAndSplitProgram();
 
-  public void findHeaderAndControlLoop(String script) {
-    int it = 0;
-    Boolean controlLoopFound = false;
-    String[] splitData = script.split("\n");
+      // Append header to the ur program.
+      writer.appendRaw(sender.getHeader());
 
-    while (it < splitData.length) {
-      // Find the first line of the control loop
-      if (splitData[it].startsWith(" socket_open(")) {
-        controlLoopFound = true;
-        break;
-      }
-      it += 1;
+      programRequested = true;
     }
-
-    if (controlLoopFound) {
-      for (int i = 0; i < splitData.length; ++i) {
-        if (i < it) {
-          urScriptHeader +=  splitData[i] + "\n";
-        }
-        else if (i >= it) {
-          urScriptControlLoop += splitData[i] + "\n";
-        }
-      }
-    }
-    else {
-      urScriptControlLoop = script;
-    }
+    return sender.getControlLoop();
   }
 }
