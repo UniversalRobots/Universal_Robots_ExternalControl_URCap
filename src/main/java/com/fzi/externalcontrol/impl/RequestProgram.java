@@ -118,11 +118,11 @@ public class RequestProgram {
     String[] programArray = program.split("\n");
 
     for (int it = 0; it < programArray.length; ++it) {
-      if (programArray[it].matches("(.*)# HEADER_BEGIN(.*)")) {
+      if (programArray[it].matches("(\\p{Zs}*)# HEADER_BEGIN(\\p{Zs}*)")) {
         headerBeginFound = true;
         this.header += programArray[it] + "\n";
       }
-      else if (programArray[it].matches("(.*)# HEADER_END(.*)") && headerBeginFound) {
+      else if (programArray[it].matches("(\\p{Zs}*)# HEADER_END(\\p{Zs}*)") && headerBeginFound) {
         headerEndFound = true;
         headerBeginFound = false;
         this.header += programArray[it] + "\n";
