@@ -37,13 +37,14 @@ public class ExternalControlInstallationNodeContribution implements Installation
   private static final String HOST_IP = "host_ip";
   private static final String PORT_NR = "port_nr";
   private static final String NAME = "name";
-  private String urScriptProgram = "";
   private static final String DEFAULT_IP = "192.168.56.1";
   private static final String DEFAULT_PORT = "50002";
   private static final String DEFAULT_NAME = DEFAULT_IP;
   private DataModel model;
   private final ExternalControlInstallationNodeView view;
   private final KeyboardInputFactory keyboardFactory;
+  private RequestProgram sender;
+  private boolean programRequested;
 
   public ExternalControlInstallationNodeContribution(InstallationAPIProvider apiProvider,
       ExternalControlInstallationNodeView view, DataModel model) {
@@ -65,8 +66,7 @@ public class ExternalControlInstallationNodeContribution implements Installation
 
   @Override
   public void generateScript(ScriptWriter writer) {
-    // Make sure the program gets requested at least once
-    urScriptProgram = "";
+    programRequested = false;
   }
 
   // IP helper functions
@@ -168,11 +168,17 @@ public class ExternalControlInstallationNodeContribution implements Installation
     };
   }
 
-  public String getUrScriptProgram() {
-	if (urScriptProgram == "") {
-	  RequestProgram sender = new RequestProgram(getHostIP(), getCustomPort());
-	  urScriptProgram = sender.sendCommand("request_program\n");
-	}
-    return urScriptProgram;
+  public String getControlLoop(ScriptWriter writer) {
+    if (programRequested == false) {
+      // Request and split the program
+      sender = new RequestProgram(getHostIP(), getCustomPort());
+      sender.requestAndSplitProgram();
+
+      // Append header to the ur program.
+      writer.appendRaw(sender.getHeader());
+
+      programRequested = true;
+    }
+    return sender.getControlLoop();
   }
 }
