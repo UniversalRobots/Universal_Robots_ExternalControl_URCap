@@ -1,4 +1,4 @@
-<Installation directory="/home/mahp/ursim-5.9.4.1031232/programs" fileName="default" showSpeedSliderOnRunTab="false">
+<Installation directory="/ursim/programs" fileName="default" showSpeedSliderOnRunTab="false">
   <IOs>
     <DigitalInputNames value=", , , , , , , "/>
     <DigitalOutputNames value=", , , , , , , "/>
@@ -33,10 +33,21 @@
     <GeneralPurposeFloatRegisterOutputActions value="NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE, NONE"/>
     <ModbusUnits/>
   </IOs>
-  <Version projectName="URSoftware" major="5" minor="9" bugfix="4" buildNumber="1031232" buildDate="Oct 20 2020, 12:00:00"/>
-  <LastSavedInVersion projectName="URSoftware" major="5" minor="9" bugfix="4" buildNumber="1031232" buildDate="Oct 20 2020, 12:00:00"/>
+  <Version projectName="URSoftware" major="5" minor="11" bugfix="1" buildNumber="108318" buildDate="Jun 18 2021, 12:00:00"/>
+  <LastSavedInVersion reference="../Version"/>
   <SmoothTransitionSettings transitionHardness="SOFT"/>
+  <ResourceControlSettings/>
+  <ContinuousPulse/>
+  <PayloadSettings>
+    <Payload name="Payload" mass="0.0" defaultPayload="true" centerOfGravity="0.0, 0.0, 0.0" inertiaParameters="0.0, 0.0, 0.0, 0.0, 0.0, 0.0" customInertiaEnabled="false"/>
+  </PayloadSettings>
   <SafeHomeSettings enabled="true" position="0.0, -1.5707963267948966, 0.0, -1.5707963267948966, 0.0, 0.0"/>
+  <TCPSettings activePose="TCP">
+    <availablePoses>
+      <tcp id="2e4b410d-3d81-4c59-937c-087544210280" name="TCP" offset="0.0, 0.0, 0.0, 0.0, 0.0, 0.0"/>
+    </availablePoses>
+  </TCPSettings>
+  <DefaultProgramSettings autoLoad="false"/>
   <Features>
     <CameraView>
       <worldTransform class="WorldTransform">
@@ -50,34 +61,8 @@
       <ToolView showAxes="true" joggable="true" isVariable="false" id="3a9e24b6-0faf-4e81-8344-6af13d2e6405"/>
     </ToolView>
   </Features>
-  <TCPSettings activePose="TCP" toolPayload="0.0">
-    <availablePoses>
-      <tcp id="a499b62d-24c7-414e-9067-c05b478c7777" name="TCP" offset="0.0, 0.0, 0.0, 0.0, 0.0, 0.0"/>
-    </availablePoses>
-  </TCPSettings>
-  <ResourceControlSettings/>
   <ToolCommSettings enabled="false" toolAnalogInput2="VOLTAGE" toolAnalogInput3="VOLTAGE" baudRate="BAUD_115200" parity="NONE" stopBits="ONE" rxIdleChars="1.5" txIdleChars="3.5" toolOutputMode="OUTPUT" toolDigitalOutput0="SINKING" toolDigitalOutput1="SINKING" toolOutputVoltage="ZERO"/>
-  <DefaultProgramSettings fileName="external_control.urp" autoLoad="true"/>
   <SafetySettings>
-[SafetySetup]
-verified = true
-withPositionLimits = [true, true, true, true, true, true]
-
-[Safety Checksum]
-version = 5.5
-crc = 1475618907
-
-[SafeHome]
-safeHomePosition = [-1.0, -1.0, -1.0, -1.0, -1.0, -1.0]
-
-[ThreePositionEnabling]
-useTP3PE = 0
-allowManualHighSpeed = 1
-
-[MiscConfiguration]
-teach_pendant = 1
-euromap67 = 0
-
 [SafetyLimits BoundaryPlane0]
 name = Safety plane 0
 displacement = 0.0
@@ -147,46 +132,20 @@ tcpOrientationVector = [0.0, 0.0, 1.0]
 maximumTcpOrientationDeviation = 3.159045946109736
 mode = DISABLED
 
-[SafetyIOConfiguration Inputs]
-emergencyStopInputA = 255
-emergencyStopInputB = 255
-reducedModeInputA = 255
-reducedModeInputB = 255
-safeguardStopResetInputA = 0
-safeguardStopResetInputB = 1
-threePositionEnablingInputA = 255
-threePositionEnablingInputB = 255
-operationalModeInputA = 255
-operationalModeInputB = 255
-automaticModeSafeguardStopInputA = 255
-automaticModeSafeguardStopInputB = 255
-automaticModeSafeguardStopResetInputA = 255
-automaticModeSafeguardStopResetInputB = 255
-
-[SafetyIOConfiguration Outputs]
-systemEmergencyStopOutputA = 255
-systemEmergencyStopOutputB = 255
-robotMovingOutputA = 255
-robotMovingOutputB = 255
-robotNotStoppingOutputA = 255
-robotNotStoppingOutputB = 255
-reducedModeOutputA = 255
-reducedModeOutputB = 255
-notReducedModeOutputA = 255
-notReducedModeOutputB = 255
-safeHomeOutputA = 255
-safeHomeOutputB = 255
-configOut0and1_OSSD = 0
-configOut2and3_OSSD = 0
-configOut4and5_OSSD = 0
-configOut6and7_OSSD = 0
-
 [WorkpieceConfiguration]
 toolSpheres = [[0.0, 0.0, 0.0, 0.0]]
 toolSphereNames = [Tool Flange]
 toolSphereIDs = [null]
 toolDirectionInclination = 0.0
 toolDirectionAzimuth = 0.0
+
+[ThreePositionEnabling]
+useTP3PE = 0
+allowManualHighSpeed = 1
+
+[MiscConfiguration]
+teach_pendant = 1
+euromap67 = 0
 
 [SafetyLimits Normal Values]
 maxTcpSpeed = 1.5
@@ -222,21 +181,62 @@ maxJointPosition = [0.05235987799999986, 0.05235987799999986, 0.0523598779999998
 minJointRevolutions = [-2, -2, -2, -2, -2, -2]
 maxJointRevolutions = [1, 1, 1, 1, 1, 1]
 
+[SafetySetup]
+withPositionLimits = [true, true, true, true, true, true]
+verified = true
+
+[Safety Checksum]
+version = 5.5
+crc = 1475618907
+
+[SafeHome]
+safeHomePosition = [-1.0, -1.0, -1.0, -1.0, -1.0, -1.0]
+
+[SafetyIOConfiguration Inputs]
+emergencyStopInputA = 255
+emergencyStopInputB = 255
+reducedModeInputA = 255
+reducedModeInputB = 255
+safeguardStopResetInputA = 0
+safeguardStopResetInputB = 1
+threePositionEnablingInputA = 255
+threePositionEnablingInputB = 255
+operationalModeInputA = 255
+operationalModeInputB = 255
+automaticModeSafeguardStopInputA = 255
+automaticModeSafeguardStopInputB = 255
+automaticModeSafeguardStopResetInputA = 255
+automaticModeSafeguardStopResetInputB = 255
+
+[SafetyIOConfiguration Outputs]
+systemEmergencyStopOutputA = 255
+systemEmergencyStopOutputB = 255
+robotMovingOutputA = 255
+robotMovingOutputB = 255
+robotNotStoppingOutputA = 255
+robotNotStoppingOutputB = 255
+reducedModeOutputA = 255
+reducedModeOutputB = 255
+notReducedModeOutputA = 255
+notReducedModeOutputB = 255
+safeHomeOutputA = 255
+safeHomeOutputB = 255
+configOut0and1_OSSD = 0
+configOut2and3_OSSD = 0
+configOut4and5_OSSD = 0
+configOut6and7_OSSD = 0
+
 </SafetySettings>
-  <ContinuousPulse/>
   <Contributions>
     <URCaps>
-      <Contributed ownerId="com.ur.urcap.conveyortracking" id="ConveyorTracking" installationContributionTitle="Conveyor Tracking" vendor="Universal Robots" name="Conveyor Tracking">
-        <data key="enabled" value="false"/>
-        <data key="major.version" value="5"/>
-        <data key="minor.version" value="9"/>
+      <Contributed ownerId="com.ur.urcap.conveyortracking" id="ConveyorTracking" installationContributionTitle="com.ur.urcap.conveyortracking" vendor="Universal Robots" name="Conveyor Tracking"/>
+      <Contributed ownerId="com.ur.urcap.ethernetip" id="EthernetIP" installationContributionTitle="com.ur.urcap.ethernetip" vendor="Universal Robots" name="Ethernet/IP"/>
+      <Contributed ownerId="com.ur.urcap.profinet" id="com.ur.urcap.profinet" installationContributionTitle="com.ur.urcap.profinet" vendor="Universal Robots" name="Profinet"/>
+      <Contributed ownerId="com.fzi.externalcontrol" id="com.fzi.externalcontrol.impl.ExternalControlInstallationNodeService" installationContributionTitle="com.fzi.externalcontrol" vendor="FZI Research Center for Information Technology" name="External Control">
+        <data key="host_ip" value="127.0.0.1"/>
+        <data key="name" value="127.0.0.1"/>
       </Contributed>
-      <Contributed ownerId="com.ur.urcap.ethernetip" id="EthernetIP" installationContributionTitle="EtherNet/IP" vendor="Universal Robots" name="Ethernet/IP"/>
-      <Contributed ownerId="com.ur.urcap.profinet" id="com.ur.urcap.profinet" installationContributionTitle="PROFINET" vendor="Universal Robots" name="Profinet"/>
-      <Contributed ownerId="com.fzi.externalcontrol" id="com.fzi.externalcontrol.impl.ExternalControlInstallationNodeService" installationContributionTitle="External Control" vendor="FZI Research Center for Information Technology" name="External Control">
-        <data key="host_ip" value="192.168.56.102"/>
-        <data key="name" value="192.168.56.102"/>
-      </Contributed>
+      <Contributed ownerId="com.ur.polyscope.screwdriving.polyscope-screwdriving-impl" id="com.ur.polyscope.screwdriving.installation.ScrewdrivingInstallationNodeService" installationContributionTitle="com.ur.polyscope.screwdriving.polyscope-screwdriving-impl" vendor="Universal Robots" name="polyscope-screwdriving-impl"/>
     </URCaps>
   </Contributions>
 </Installation>

@@ -17,32 +17,31 @@
 # // -- END LICENSE BLOCK ------------------------------------------------
 
 # A simple python 3 server to test the External Control URCap
-# The server answer request from the URCap with the context of the given file
+# The server answer request from the URCap with the context of the given file,
+# it is used inside simple_external_control_server
 
-import socket
 import socketserver
 import threading
 import argparse
-
-parser = argparse.ArgumentParser(description='Simple External Control server')
-parser.add_argument(
-    "file", type=str, help="Path to the UR script file, which will be sent to the robot")
-parser.add_argument("-p", "--port", type=int,
-                    default=50002, help="Port number to use")
-
-args = parser.parse_args()
-
 
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     daemon_threads = True
     allow_reuse_address = True
 
+    def __init__(self, server_address, RequestHandlerClass, file):
+        self.file = file
+        super().__init__(server_address, RequestHandlerClass)
+
 
 class FileHandler(socketserver.StreamRequestHandler):
+    def __init__(self, request, client_address, server):
+        self.file = server.file
+        super().__init__(request, client_address, server)
+
     def handle(self):
         client = f'{self.client_address} on {threading.currentThread().getName()}'
         print(f'Connected: {client}')
-        file = open(args.file, "r")
+        file = open(self.file, "r")
         while True:
             data = file.read()
 
@@ -50,14 +49,23 @@ class FileHandler(socketserver.StreamRequestHandler):
             if not data:
                 break
             self.wfile.write(data.encode('utf-8'))
+        file.close()
         print(f'Closed: {client}')
 
+if __name__ == '__main__':
+	parser = argparse.ArgumentParser(description='Simple External Control server')
+	parser.add_argument(
+		"file", type=str, help="Path to the UR script file, which will be sent to the robot")
+	parser.add_argument("-p", "--port", type=int,
+						default=50002, help="Port number to use")
 
-with ThreadedTCPServer(('', args.port), FileHandler) as server:
-    print(f'The Simple External Control server is running on port', args.port)
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        pass
+	args = parser.parse_args()
 
-    server.server_close()
+	server = ThreadedTCPServer(('', args.port), FileHandler, args.file)
+	print(f'The Simple External Control server is running on port {args.port}')
+	try:
+		server.serve_forever()
+	except KeyboardInterrupt:
+		pass
+
+	server.server_close()

@@ -1,7 +1,10 @@
+# HEADER_BEGIN
 
 def test_func():
   textmsg("test function")
 end
+
+# HEADER_END
 
 # NODE_CONTROL_LOOP_BEGINS
 

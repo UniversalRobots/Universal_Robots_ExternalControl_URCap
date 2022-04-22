@@ -1,0 +1,21 @@
+<URProgram name="one_urcap" installation="default" installationRelativePath="default" directory="/ursim/programs" createdIn="5.11.1.108318" lastSavedIn="5.11.1.108318" robotSerialNumber="20195599999" crcValue="1475618907">
+  <kinematics status="NOT_INITIALIZED" validChecksum="false">
+    <deltaTheta value="0.0, 0.0, 0.0, 0.0, 0.0, 0.0"/>
+    <a value="0.0, -0.425, -0.3922, 0.0, 0.0, 0.0"/>
+    <d value="0.1625, 0.0, 0.0, 0.1333, 0.0997, 0.0996"/>
+    <alpha value="1.570796327, 0.0, 0.0, 1.570796327, -1.570796327, 0.0"/>
+    <jointChecksum value="-1, -1, -1, -1, -1, -1"/>
+  </kinematics>
+  <children>
+    <MainProgram runOnlyOnce="true" InitVariablesNode="false">
+      <children>
+        <Wait type="Sleep">
+          <waitTime>1.0</waitTime>
+        </Wait>
+        <Contributed strategyClass="com.fzi.externalcontrol.ExternalControlNode" strategyProgramNodeType="External Control" strategyURCapDeveloper="FZI Research Center for Information Technology" strategyURCapName="External Control">
+          <dataModel/>
+        </Contributed>
+      </children>
+    </MainProgram>
+  </children>
+</URProgram>

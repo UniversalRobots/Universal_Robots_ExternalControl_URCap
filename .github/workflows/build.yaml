@@ -17,12 +17,17 @@ jobs:
       - name: Run URSim
         run: |
           .github/dockerursim/build_and_run_docker_ursim.sh
-      - name: Run UR Client and execute external control test
+      - name: Install netcat
         run: |
-          .github/dockerurclient/build_ur_client_and_run_test.sh
+          sudo apt-get update && sudo apt-get install -y netcat 
+      - name: Wait for dashboard client
+        run: | 
+          ./.github/helpers/wait_for_dashboard_server.sh
+      - name: Run test
+        run: |
+          python3 tests/test_urcap.py
       - name: Upload urcap_artifact
         uses: actions/upload-artifact@v1
         with:
           path: target
           name: external_control_sdk-${{ matrix.SDK_VERSION }}.urcap
-
