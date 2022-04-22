@@ -93,8 +93,10 @@ class TestUrcap(unittest.TestCase):
 		# Load program
 		self.client.sendAndRecieve("load one_urcap.urp")
 		result = self.client.sendAndRecieve("get loaded program")
+		t_end = time.time() + 5
+		while 'one_urcap' not in result and time.time() < t_end:
+			result = self.client.sendAndRecieve("get loaded program")
 		self.assertTrue('one_urcap' in result)
-		print("self.assertEqual done")
 
 		self.client.sendAndRecieve("brake release")
 
@@ -125,14 +127,15 @@ class TestUrcap(unittest.TestCase):
 		# Load program
 		self.client.sendAndRecieve("load multiple_urcaps.urp")
 		result = self.client.sendAndRecieve("get loaded program")
+		t_end = time.time() + 5
+		while 'one_urcap' not in result and time.time() < t_end:
+			result = self.client.sendAndRecieve("get loaded program")
 		self.assertTrue('multiple_urcaps' in result)
-		print("self.assertEqual done")
 
 		self.client.sendAndRecieve("brake release")
 
 		# Make sure the robot is running
 		robot_mode = self.client.sendAndRecieve("robotmode")
-		print(robot_mode)
 		t_end = time.time() + 10
 		while robot_mode != "Robotmode: RUNNING" and time.time() < t_end:
 			robot_mode = self.client.sendAndRecieve("robotmode")
