@@ -1,5 +1,5 @@
 # URCaps External Control
-The External Control URCap is the user interface for the Universal Robots [ROS](https://github.com/UniversalRobots/Universal_Robots_ROS_Driver), [ROS2](https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver) and [Isaac SDK](https://github.com/UniversalRobots/Universal_Robots_Isaac_Driver) driver, as well as the [Universal Robots Client Library](https://github.com/UniversalRobots/Universal_Robots_Client_Library]) used by the drivers.
+The External Control URCap is the user interface for the Universal Robots [ROS](https://github.com/UniversalRobots/Universal_Robots_ROS_Driver), [ROS2](https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver) and [Isaac SDK](https://github.com/UniversalRobots/Universal_Robots_Isaac_Driver) driver, as well as the [Universal Robots Client Library](https://github.com/UniversalRobots/Universal_Robots_Client_Library) used by the drivers.
 
 It supports the Universal Robots CB3 and e-Series robots.
 
