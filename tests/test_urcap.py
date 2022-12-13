@@ -24,6 +24,8 @@ import sys
 import time
 import threading
 
+from examples.simple_external_control_server.simple_external_control_server import ThreadedTCPServer, FileHandler
+
 # Make sure we can find the external control server
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from examples.simple_external_control_server.simple_external_control_server import ThreadedTCPServer, FileHandler
@@ -68,6 +70,10 @@ class ServerThread(threading.Thread):
 
 
 class TestUrcap(unittest.TestCase):
+    client = None
+    server = None
+    server_thread = None
+
     @classmethod
     def setUpClass(cls):
         cls.init_robot(cls)
@@ -90,74 +96,50 @@ class TestUrcap(unittest.TestCase):
         self.client = DashboardClient(ROBOT_IP)
         self.client.connect()
 
-    def test_one_urcap(self):
-        """This is testing that a program with the urcap can load and run."""
-
+    def run_program_test(self, program):
         # Load program
-        self.client.sendAndRecieve("load one_urcap.urp")
-        result = self.client.sendAndRecieve("get loaded program")
+        self.client.sendAndRecieve(f"load {program}.urp")
         t_end = time.time() + 5
-        while 'one_urcap' not in result and time.time() < t_end:
+        while time.time() < t_end:
             result = self.client.sendAndRecieve("get loaded program")
-        self.assertTrue('one_urcap' in result)
+            if program in result:
+                break
+        self.assertTrue(program in result)
 
         self.client.sendAndRecieve("brake release")
 
         # Make sure the robot is running
-        robot_mode = self.client.sendAndRecieve("robotmode")
         t_end = time.time() + 10
-        while robot_mode != "Robotmode: RUNNING" and time.time() < t_end:
+        while time.time() < t_end:
             robot_mode = self.client.sendAndRecieve("robotmode")
+            if robot_mode == "Robotmode: RUNNING":
+                break
         self.assertEqual(robot_mode, "Robotmode: RUNNING")
 
         # Play program
         self.client.sendAndRecieve("play")
-        program_state = self.client.sendAndRecieve("programState")
         t_end = time.time() + 10
-        while "PLAYING" not in program_state and time.time() < t_end:
+        while time.time() < t_end:
             program_state = self.client.sendAndRecieve("programState")
+            if "PLAYING" in program_state:
+                break
         self.assertTrue("PLAYING" in program_state)
 
         # Wait for program to stop again
-        program_state = self.client.sendAndRecieve("programState")
         t_end = time.time() + 10
-        while "STOPPED" not in program_state and time.time() < t_end:
+        while time.time() < t_end:
             program_state = self.client.sendAndRecieve("programState")
+            if "STOPPED" in program_state:
+                break
         self.assertTrue("STOPPED" in program_state)
+
+    def test_one_urcap(self):
+        """This is testing that a program with the urcap can load and run."""
+        self.run_program_test("one_urcap")
 
     def test_multiple_urcaps(self):
         """Test that a program with multiple URCaps can load and run, this will test # HEADER_BEGIN # HEADER_END feature."""
-        # Load program
-        self.client.sendAndRecieve("load multiple_urcaps.urp")
-        result = self.client.sendAndRecieve("get loaded program")
-        t_end = time.time() + 5
-        while 'one_urcap' not in result and time.time() < t_end:
-            result = self.client.sendAndRecieve("get loaded program")
-        self.assertTrue('multiple_urcaps' in result)
-
-        self.client.sendAndRecieve("brake release")
-
-        # Make sure the robot is running
-        robot_mode = self.client.sendAndRecieve("robotmode")
-        t_end = time.time() + 10
-        while robot_mode != "Robotmode: RUNNING" and time.time() < t_end:
-            robot_mode = self.client.sendAndRecieve("robotmode")
-        self.assertEqual(robot_mode, "Robotmode: RUNNING")
-
-        # Play program
-        self.client.sendAndRecieve("play")
-        program_state = self.client.sendAndRecieve("programState")
-        t_end = time.time() + 10
-        while "PLAYING" not in program_state and time.time() < t_end:
-            program_state = self.client.sendAndRecieve("programState")
-        self.assertTrue("PLAYING" in program_state)
-
-        # Wait for program to stop again
-        program_state = self.client.sendAndRecieve("programState")
-        t_end = time.time() + 10
-        while "STOPPED" not in program_state and time.time() < t_end:
-            program_state = self.client.sendAndRecieve("programState")
-        self.assertTrue("STOPPED" in program_state)
+        self.run_program_test("multiple_urcaps")
 
 
 if __name__ == '__main__':
