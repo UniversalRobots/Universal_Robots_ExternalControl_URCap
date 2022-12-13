@@ -121,7 +121,7 @@ class TestUrcap(unittest.TestCase):
     def run_program_test(self, program):
         # Load program
         self.client.sendAndRecieve(f"load {program}.urp")
-        t_end = time.time() + 5
+        t_end = time.time() + 30 # bootup can take some time even after the dashboard is there.
         while time.time() < t_end:
             result = self.client.sendAndRecieve("get loaded program")
             if program in result:
