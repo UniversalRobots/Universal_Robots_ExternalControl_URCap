@@ -16,22 +16,44 @@
 # // limitations under the License.
 # // -- END LICENSE BLOCK ------------------------------------------------
 
-import sys
 import os
-import unittest
 import socket
+import socketserver
 import sys
-import time
 import threading
-
-from examples.simple_external_control_server.simple_external_control_server import ThreadedTCPServer, FileHandler
-
-# Make sure we can find the external control server
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from examples.simple_external_control_server.simple_external_control_server import ThreadedTCPServer, FileHandler
+import time
+import unittest
 
 
 ROBOT_IP = "127.0.0.1"
+
+class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+    daemon_threads = True
+    allow_reuse_address = True
+
+    def __init__(self, server_address, RequestHandlerClass, file):
+        self.file = file
+        super().__init__(server_address, RequestHandlerClass)
+
+
+class FileHandler(socketserver.StreamRequestHandler):
+    def __init__(self, request, client_address, server):
+        self.file = server.file
+        super().__init__(request, client_address, server)
+
+    def handle(self):
+        client = f'{self.client_address} on {threading.currentThread().getName()}'
+        print(f'Connected: {client}')
+        file = open(self.file, "r")
+        while True:
+            data = file.read()
+
+            print(data)
+            if not data:
+                break
+            self.wfile.write(data.encode('utf-8'))
+        file.close()
+        print(f'Closed: {client}')
 
 
 class DashboardClient:
