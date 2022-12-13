@@ -24,6 +24,7 @@ import socketserver
 import threading
 import argparse
 
+
 class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     daemon_threads = True
     allow_reuse_address = True
@@ -52,20 +53,21 @@ class FileHandler(socketserver.StreamRequestHandler):
         file.close()
         print(f'Closed: {client}')
 
+
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser(description='Simple External Control server')
-	parser.add_argument(
-		"file", type=str, help="Path to the UR script file, which will be sent to the robot")
-	parser.add_argument("-p", "--port", type=int,
-						default=50002, help="Port number to use")
+    parser = argparse.ArgumentParser(description='Simple External Control server')
+    parser.add_argument(
+        "file", type=str, help="Path to the UR script file, which will be sent to the robot")
+    parser.add_argument("-p", "--port", type=int,
+                        default=50002, help="Port number to use")
 
-	args = parser.parse_args()
+    args = parser.parse_args()
 
-	server = ThreadedTCPServer(('', args.port), FileHandler, args.file)
-	print(f'The Simple External Control server is running on port {args.port}')
-	try:
-		server.serve_forever()
-	except KeyboardInterrupt:
-		pass
+    server = ThreadedTCPServer(('', args.port), FileHandler, args.file)
+    print(f'The Simple External Control server is running on port {args.port}')
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
 
-	server.server_close()
+    server.server_close()

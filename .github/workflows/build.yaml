@@ -19,9 +19,9 @@ jobs:
           .github/dockerursim/build_and_run_docker_ursim.sh
       - name: Install netcat
         run: |
-          sudo apt-get update && sudo apt-get install -y netcat 
+          sudo apt-get update && sudo apt-get install -y netcat
       - name: Wait for dashboard client
-        run: | 
+        run: |
           ./.github/helpers/wait_for_dashboard_server.sh
       - name: Run test
         run: |
