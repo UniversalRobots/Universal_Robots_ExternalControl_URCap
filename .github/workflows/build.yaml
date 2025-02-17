@@ -65,7 +65,7 @@ jobs:
         run: |
           python3 tests/test_urcap.py
       - name: Upload urcap_artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           path: target
           name: external_control_sdk-${{ matrix.SDK_VERSION }}.urcap
