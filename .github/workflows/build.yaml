@@ -13,11 +13,6 @@ jobs:
       fail-fast: false
       matrix:
         SDK_VERSION:
-          #- 1.6.1
-          #- 1.7.0
-          #- 1.8.0
-          #- 1.9.0
-          #- 1.10.0
           #- 1.11.0
           #- 1.12.0
           #- 1.13.0
@@ -47,7 +42,7 @@ jobs:
           SDK_VERSION: ${{ matrix.SDK_VERSION }}
       - name: start ursim
         run: |
-          docker run --rm -d -p 29999:29999 -p 30001-30004:30001:30004 --name ursim
+          docker run --rm -d -p 29999:29999 -p 30001-30004:30001-30004 --name ursim universalrobots/ursim_e-series:latest
         #env:
           #DOCKER_RUN_OPTS: --network ursim_net
           #ROBOT_MODEL: ${{matrix.env.ROBOT_MODEL}}
