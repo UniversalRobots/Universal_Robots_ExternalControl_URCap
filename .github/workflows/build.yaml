@@ -1,5 +1,10 @@
 name: Build URCap
-on: [push, pull_request]
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -7,16 +12,49 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        SDK_VERSION: [1.6.1, 1.7.0, 1.8.0, 1.9.0]
+        SDK_VERSION:
+          #- 1.6.1
+          #- 1.7.0
+          #- 1.8.0
+          - 1.9.0
+          #- 1.10.0
+          #- 1.11.0
+          #- 1.12.0
+          #- 1.13.0
+          #- 1.14.0
+          #- 1.15.0
+          #- 1.16.0
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: ./.github/actions/build_urcap
+      - uses: actions/checkout@v4
+      - run: |
+          SDK_MAJOR=$(echo ${SDK_VERSION} | awk -F. '{print $1}')
+          SDK_MINOR=$(echo ${SDK_VERSION} | awk -F. '{print $2}')
+          SDK_BUILD=$(echo ${SDK_VERSION} | awk -F. '{print $3}')
+          apt-get update && apt-get install -y default-jdk maven dialog sshpass unzip curl
+          download_folder=$(mktemp -d)
+          pushd ${download_folder}
+          curl -o sdk-${SDK_VERSION}.zip https://s3-eu-west-1.amazonaws.com/urplus-developer-site/sdk/sdk-${SDK_VERSION}.zip
+          mkdir sdk
+          unzip -q sdk-${SDK_VERSION}.zip -d sdk
+          if [ "$SDK_MAJOR" -eq 1 ] && [ "$SDK_MINOR" -lt 10 ]; then
+            cd sdk
+          else
+            cd sdk/URCap_SDK-${SDK_VERSION}
+          fi
+          ./install.sh
+          popd
+          mvn install
         env:
           SDK_VERSION: ${{ matrix.SDK_VERSION }}
-      - name: Run URSim
+      - name: start ursim
         run: |
-          .github/dockerursim/build_and_run_docker_ursim.sh
+          docker run --rm -d -p 29999:29999 -p 30001-30004:30001:30004 --name ursim
+        #env:
+          #DOCKER_RUN_OPTS: --network ursim_net
+          #ROBOT_MODEL: ${{matrix.env.ROBOT_MODEL}}
+          #URSIM_VERSION: ${{matrix.env.URSIM_VERSION}}
+          #PROGRAM_FOLDER: ${{matrix.env.PROGRAM_FOLDER}}
       - name: Install netcat
         run: |
           sudo apt-get update && sudo apt-get install -y netcat
