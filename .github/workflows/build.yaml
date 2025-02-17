@@ -50,7 +50,7 @@ jobs:
           #PROGRAM_FOLDER: ${{matrix.env.PROGRAM_FOLDER}}
       - name: Install netcat
         run: |
-          sudo apt-get update && sudo apt-get install -y netcat
+          sudo apt-get install -y netcat-openbsd
       - name: Wait for dashboard client
         run: |
           ./.github/helpers/wait_for_dashboard_server.sh
