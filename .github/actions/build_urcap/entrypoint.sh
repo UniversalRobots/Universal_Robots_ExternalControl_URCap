@@ -11,10 +11,10 @@ pushd ${download_folder}
 curl -o sdk-${SDK_VERSION}.zip https://s3-eu-west-1.amazonaws.com/urplus-developer-site/sdk/sdk-${SDK_VERSION}.zip
 mkdir sdk
 unzip -q sdk-${SDK_VERSION}.zip -d sdk
-if [ "$SDK_MAJOR" -eq 1 ] && [ "$SDK_MINOR" -lt 10 ]; then
-  cd sdk
-else
+if [ "$SDK_MAJOR" -eq 1 ] && [ "$SDK_MINOR" -eq 10 ]; then
   cd sdk/URCap_SDK-${SDK_VERSION}
+else
+  cd sdk
 fi
 ./install.sh
 
