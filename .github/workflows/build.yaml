@@ -47,7 +47,7 @@ jobs:
           #DOCKER_RUN_OPTS: --network ursim_net
           #ROBOT_MODEL: ${{matrix.env.ROBOT_MODEL}}
           #URSIM_VERSION: ${{matrix.env.URSIM_VERSION}}
-          PROGRAM_FOLDER: ./.github/dockerursim/.vol
+          PROGRAM_FOLDER: .github/dockerursim/.vol
       - name: Install netcat
         run: |
           sudo apt-get install -y netcat-openbsd
