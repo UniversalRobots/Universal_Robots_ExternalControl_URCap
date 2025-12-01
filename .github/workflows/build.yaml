@@ -42,13 +42,14 @@ jobs:
           SDK_VERSION: ${{ matrix.SDK_VERSION }}
       - name: start ursim
         run: |
-          docker run --rm -d -p 29999:29999 -p 30001-30004:30001-30004 -v ${PROGRAM_FOLDER}:/ursim/programs --name ursim universalrobots/ursim_e-series:latest
+          docker run --rm -d -p 29999:29999 -p 30001-30004:30001-30004 -v ${PROGRAM_FOLDER}:/ursim/programs -v ${PROGRAM_FOLDER}:/urcaps --name ursim universalrobots/ursim_e-series:latest
           docker container inspect ursim
         env:
           #DOCKER_RUN_OPTS: --network ursim_net
           #ROBOT_MODEL: ${{matrix.env.ROBOT_MODEL}}
           #URSIM_VERSION: ${{matrix.env.URSIM_VERSION}}
-          PROGRAM_FOLDER: .github/dockerursim/.vol
+          PROGRAM_FOLDER: ./.github/dockerursim/.vol
+          URCAPS_FOLDER: ./target
       - name: Install netcat
         run: |
           sudo apt-get install -y netcat-openbsd
