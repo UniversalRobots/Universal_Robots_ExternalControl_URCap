@@ -43,6 +43,7 @@ jobs:
       - name: start ursim
         run: |
           docker run --rm -d -p 29999:29999 -p 30001-30004:30001-30004 -v ${PROGRAM_FOLDER}:/ursim/programs --name ursim universalrobots/ursim_e-series:latest
+          docker container inspect ursim
         env:
           #DOCKER_RUN_OPTS: --network ursim_net
           #ROBOT_MODEL: ${{matrix.env.ROBOT_MODEL}}
