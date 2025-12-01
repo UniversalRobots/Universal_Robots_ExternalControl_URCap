@@ -30,6 +30,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.SocketTimeoutException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -80,6 +81,8 @@ public class RequestProgram {
       System.out.println("hostIp is: " + this.hostIp);
       System.out.println("portNr is: " + this.portNr);
 
+      // set socket timeout to 500 ms when reading from buffer
+      socket.setSoTimeout(500);
 
       if (socket.isConnected()) {
         // output stream creation
@@ -103,6 +106,10 @@ public class RequestProgram {
         out.close();
       }
       socket.close();
+    } catch (SocketTimeoutException e) {
+      result = String.format("popup(\"Timeout while reading requested program from " + this.hostIp + ":" + this.portNr + "\","
+          + "\"Receive program failed\", False, True, blocking=True)\n"
+          + "sync()", e.getMessage());
     } catch (IOException e) {
       result = String.format("popup(\"The connection to the remote PC at " + this.hostIp + ":" + this.portNr + " could not be established. Reason: %s\","
           + "\"Receive program failed\", False, True, blocking=True)\n"
