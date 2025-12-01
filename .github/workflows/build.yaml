@@ -42,7 +42,7 @@ jobs:
           SDK_VERSION: ${{ matrix.SDK_VERSION }}
       - name: start ursim
         run: |
-          docker run --rm -d -p 29999:29999 -p 30001-30004:30001-30004 --name ursim universalrobots/ursim_e-series:latest -v ${PROGRAM_FOLDER}:/ursim/programs
+          docker run --rm -d -p 29999:29999 -p 30001-30004:30001-30004 -v ${PROGRAM_FOLDER}:/ursim/programs --name ursim universalrobots/ursim_e-series:latest
         env:
           #DOCKER_RUN_OPTS: --network ursim_net
           #ROBOT_MODEL: ${{matrix.env.ROBOT_MODEL}}
