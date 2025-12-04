@@ -1,5 +1,10 @@
 name: Build URCap
-on: [push, pull_request]
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -7,19 +12,51 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        SDK_VERSION: [1.6.1, 1.7.0, 1.8.0, 1.9.0]
+        SDK_VERSION:
+          - 1.11.0
+          - 1.12.0
+          - 1.13.0
+          - 1.14.0
 
     steps:
-      - uses: actions/checkout@v1
-      - uses: ./.github/actions/build_urcap
+      - uses: actions/checkout@v4
+      - run: |
+          SDK_MAJOR=$(echo ${SDK_VERSION} | awk -F. '{print $1}')
+          SDK_MINOR=$(echo ${SDK_VERSION} | awk -F. '{print $2}')
+          SDK_BUILD=$(echo ${SDK_VERSION} | awk -F. '{print $3}')
+          sudo apt-get update && sudo apt-get install -y openjdk-8-jdk maven dialog sshpass unzip curl
+          download_folder=$(mktemp -d)
+          pushd ${download_folder}
+          curl -o sdk-${SDK_VERSION}.zip https://s3-eu-west-1.amazonaws.com/urplus-developer-site/sdk/sdk-${SDK_VERSION}.zip
+          mkdir sdk
+          unzip -q sdk-${SDK_VERSION}.zip -d sdk
+          if [ "$SDK_MAJOR" -eq 1 ] && [ "$SDK_MINOR" -eq 10 ]; then
+            cd sdk/URCap_SDK-${SDK_VERSION}
+          else
+            cd sdk
+          fi
+          ./install.sh
+          popd
+          mvn install
         env:
           SDK_VERSION: ${{ matrix.SDK_VERSION }}
-      - name: Run URSim
+      - run: docker network create --subnet=192.168.56.0/24 ursim_net
+      - name: start ursim
         run: |
-          .github/dockerursim/build_and_run_docker_ursim.sh
+          docker run --rm -d \
+          -p 29999:29999 \
+          -p 30001-30004:30001-30004 \
+          -v ${PROGRAM_FOLDER}:/ursim/programs \
+          -v ${URCAPS_FOLDER}:/urcaps \
+          --net ursim_net --ip 192.168.56.101 \
+          --name ursim \
+          universalrobots/ursim_e-series:latest
+        env:
+          PROGRAM_FOLDER: ./.github/dockerursim/.vol
+          URCAPS_FOLDER: ./target
       - name: Install netcat
         run: |
-          sudo apt-get update && sudo apt-get install -y netcat
+          sudo apt-get install -y netcat-openbsd
       - name: Wait for dashboard client
         run: |
           ./.github/helpers/wait_for_dashboard_server.sh
@@ -27,7 +64,7 @@ jobs:
         run: |
           python3 tests/test_urcap.py
       - name: Upload urcap_artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           path: target
           name: external_control_sdk-${{ matrix.SDK_VERSION }}.urcap
